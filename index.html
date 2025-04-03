@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Finanziaria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar per schermi grandi (visibile solo su dispositivi pieghevoli aperti) -->
+            <div class="col-lg-3 d-none d-lg-block sidebar">
+                <div class="d-flex flex-column flex-shrink-0 p-3 text-white">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-4">Gestione Finanziaria</span>
+                    </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active" id="dashboard-tab">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="investments-tab">
+                                <i class="bi bi-graph-up-arrow me-2"></i>
+                                Investimenti
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="crypto-tab">
+                                <i class="bi bi-currency-bitcoin me-2"></i>
+                                Crypto
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="etf-tab">
+                                <i class="bi bi-bar-chart me-2"></i>
+                                ETF
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="silver-tab">
+                                <i class="bi bi-coin me-2"></i>
+                                Argento
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="expenses-tab">
+                                <i class="bi bi-cart me-2"></i>
+                                Spese
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="projections-tab">
+                                <i class="bi bi-calendar-check me-2"></i>
+                                Proiezioni
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" id="alerts-tab">
+                                <i class="bi bi-bell me-2"></i>
+                                Alert
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <strong>Utente</strong>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="#">Impostazioni</a></li>
+                            <li><a class="dropdown-item" href="#">Profilo</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Esci</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenuto principale -->
+            <main class="col-12 col-lg-9 ms-sm-auto px-md-4">
+                <!-- Navbar superiore (visibile solo su dispositivi piccoli) -->
+                <nav class="navbar navbar-expand-lg navbar-dark d-lg-none">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Gestione Finanziaria</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" id="mobile-dashboard-tab">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-investments-tab">Investimenti</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-crypto-tab">Crypto</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-etf-tab">ETF</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-silver-tab">Argento</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-expenses-tab">Spese</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-projections-tab">Proiezioni</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="mobile-alerts-tab">Alert</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Contenuto delle sezioni -->
+                <div class="content-section" id="dashboard-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Condividi</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Esporta</button>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                                <i class="bi bi-calendar"></i>
+                                Questa settimana
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Riepilogo del patrimonio -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Riepilogo Patrimonio</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <h5>Totale</h5>
+                                    <h2 class="text-primary">€5.220,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h5>Contributi</h5>
+                                    <h2>€6.046,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h5>Performance</h5>
+                                    <h2 class="text-danger">-13,66%</h2>
+                                </div>
+                            </div>
+                            <div class="row text-center mt-3">
+                                <div class="col-md-4 mb-3">
+                                    <h5 class="text-warning">Crypto</h5>
+                                    <h3 class="text-warning">€424,00</h3>
+                                    <small class="text-danger">-45,78%</small>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h5 class="text-info">ETF</h5>
+                                    <h3 class="text-info">€4.575,00</h3>
+                                    <small class="text-danger">-9,15%</small>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h5 class="text-secondary">Argento</h5>
+                                    <h3 class="text-secondary">€221,00</h3>
+                                    <small class="text-danger">-3,07%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grafici principali -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header">
+                                    <h4 class="my-0 fw-normal">Allocazione del Patrimonio</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="allocationChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header">
+                                    <h4 class="my-0 fw-normal">Performance Mensile</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="performanceChart" height="250"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert -->
+                    <div class="card mb-4 shadow-sm bg-light-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="my-0 fw-normal">Alert Attivi</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>Performance negativa per Crypto:</strong> -45,78%
+                            </div>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <strong>Performance negativa per ETF:</strong> -9,15%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ultime transazioni -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="my-0 fw-normal">Ultime Transazioni</h4>
+                            <button class="btn btn-sm btn-outline-primary" id="add-transaction-btn">
+                                <i class="bi bi-plus-circle me-1"></i> Aggiungi
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Categoria</th>
+                                            <th>Descrizione</th>
+                                            <th>Importo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>01/04/2025</td>
+                                            <td>Alimentari</td>
+                                            <td>Spesa settimanale</td>
+                                            <td class="text-danger">-€85,30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>28/03/2025</td>
+                                            <td>Trasporti</td>
+                                            <td>Benzina</td>
+                                            <td class="text-danger">-€45,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>26/03/2025</td>
+                                            <td>Intrattenimento</td>
+                                            <td>Cinema</td>
+                                            <td class="text-danger">-€25,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Investimenti -->
+                <div class="content-section d-none" id="investments-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Investimenti</h1>
+                    </div>
+                    
+                    <!-- Riepilogo investimenti -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Riepilogo Investimenti</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Valore Attuale</h5>
+                                    <h2 class="text-primary">€5.220,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Contributi Versati</h5>
+                                    <h2>€6.046,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Performance Totale</h5>
+                                    <h2 class="text-danger">-13,66%</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dettagli degli asset -->
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-warning text-dark">
+                                    <h4 class="my-0 fw-normal">Crypto</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="card-title pricing-card-title">€424,00</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>Contributi: €782,00</li>
+                                        <li>Performance: -45,78%</li>
+                                        <li>Previsione: +15,00%</li>
+                                    </ul>
+                                    <button type="button" class="btn btn-lg btn-block btn-outline-warning edit-asset" data-asset-type="crypto">
+                                        Modifica
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-info text-white">
+                                    <h4 class="my-0 fw-normal">ETF</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="card-title pricing-card-title">€4.575,00</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>Contributi: €5.036,00</li>
+                                        <li>Performance: -9,15%</li>
+                                        <li>Previsione: +8,79%</li>
+                                    </ul>
+                                    <button type="button" class="btn btn-lg btn-block btn-outline-info edit-asset" data-asset-type="etf">
+                                        Modifica
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-secondary text-white">
+                                    <h4 class="my-0 fw-normal">Argento</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h2 class="card-title pricing-card-title">€221,00</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li>Contributi: €228,00</li>
+                                        <li>Performance: -3,07%</li>
+                                        <li>Previsione: +6,50%</li>
+                                    </ul>
+                                    <button type="button" class="btn btn-lg btn-block btn-outline-secondary edit-asset" data-asset-type="silver">
+                                        Modifica
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grafico di allocazione -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Allocazione del Patrimonio</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="investmentsAllocationChart" height="300"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Asset</th>
+                                                <th>Valore</th>
+                                                <th>Percentuale</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="badge bg-warning">Crypto</span></td>
+                                                <td>€424,00</td>
+                                                <td>8,12%</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge bg-info">ETF</span></td>
+                                                <td>€4.575,00</td>
+                                                <td>87,64%</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="badge bg-secondary">Argento</span></td>
+                                                <td>€221,00</td>
+                                                <td>4,23%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Crypto -->
+                <div class="content-section d-none" id="crypto-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Crypto</h1>
+                    </div>
+                    
+                    <!-- Dettagli Crypto -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-warning text-dark">
+                            <h4 class="my-0 fw-normal">Dettagli Crypto</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Valore Attuale</h5>
+                                    <h2 class="text-warning">€424,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Contributi Versati</h5>
+                                    <h2>€782,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Performance</h5>
+                                    <h2 class="text-danger">-45,78%</h2>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <button class="btn btn-warning edit-asset" data-asset-type="crypto">
+                                        <i class="bi bi-pencil me-1"></i> Modifica Valori
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Composizione del portafoglio crypto -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Composizione del Portafoglio</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="cryptoAllocationChart" height="300"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Crypto</th>
+                                                    <th>Percentuale</th>
+                                                    <th>Valore</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Bitcoin (BTC)</td>
+                                                    <td>22,75%</td>
+                                                    <td>€96,46</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Solana (SOL)</td>
+                                                    <td>11,23%</td>
+                                                    <td>€47,62</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ether (ETH)</td>
+                                                    <td>10,25%</td>
+                                                    <td>€43,46</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Aave (AAVE)</td>
+                                                    <td>7,48%</td>
+                                                    <td>€31,72</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cardano (ADA)</td>
+                                                    <td>7,22%</td>
+                                                    <td>€30,61</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Altri</td>
+                                                    <td>41,07%</td>
+                                                    <td>€174,13</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proiezioni Crypto -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Proiezioni fino a Dicembre 2025</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="cryptoProjectionChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione ETF -->
+                <div class="content-section d-none" id="etf-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">ETF</h1>
+                    </div>
+                    
+                    <!-- Dettagli ETF -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h4 class="my-0 fw-normal">Dettagli ETF</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Valore Attuale</h5>
+                                    <h2 class="text-info">€4.575,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Contributi Versati</h5>
+                                    <h2>€5.036,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Performance</h5>
+                                    <h2 class="text-danger">-9,15%</h2>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <button class="btn btn-info text-white edit-asset" data-asset-type="etf">
+                                        <i class="bi bi-pencil me-1"></i> Modifica Valori
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Composizione del portafoglio ETF -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Composizione del Portafoglio</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="etfAllocationChart" height="300"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>ETF</th>
+                                                    <th>Previsione</th>
+                                                    <th>Valore</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>iShares Dow Jones Global Titans 50 (EXI2)</td>
+                                                    <td class="text-success">+9,43%</td>
+                                                    <td>€915,00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>iShares Edge MSCI World Quality Factor (IS3Q)</td>
+                                                    <td class="text-success">+13,39%</td>
+                                                    <td>€915,00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Xtrackers MSCI World Information Technology (XDWT)</td>
+                                                    <td class="text-success">+20,40%</td>
+                                                    <td>€915,00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Xtrackers MSCI USA Consumer Discretionary (XUCD)</td>
+                                                    <td class="text-danger">-7,50%</td>
+                                                    <td>€457,50</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Altri ETF</td>
+                                                    <td class="text-success">+4,80%</td>
+                                                    <td>€1.372,50</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proiezioni ETF -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Proiezioni fino a Dicembre 2025</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="etfProjectionChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Argento -->
+                <div class="content-section d-none" id="silver-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Argento</h1>
+                    </div>
+                    
+                    <!-- Dettagli Argento -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-secondary text-white">
+                            <h4 class="my-0 fw-normal">Dettagli Argento</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Valore Attuale</h5>
+                                    <h2 class="text-secondary">€221,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Contributi Versati</h5>
+                                    <h2>€228,00</h2>
+                                </div>
+                                <div class="col-md-4 mb-3 text-center">
+                                    <h5>Performance</h5>
+                                    <h2 class="text-danger">-3,07%</h2>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <button class="btn btn-secondary edit-asset" data-asset-type="silver">
+                                        <i class="bi bi-pencil me-1"></i> Modifica Valori
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Andamento prezzo argento -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Andamento Prezzo Argento</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="silverPriceChart" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Proiezioni Argento -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Proiezioni fino a Dicembre 2025</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="silverProjectionChart" height="250"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Spese -->
+                <div class="content-section d-none" id="expenses-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Spese</h1>
+                        <button class="btn btn-primary" id="add-expense-btn">
+                            <i class="bi bi-plus-circle me-1"></i> Aggiungi Spesa
+                        </button>
+                    </div>
+                    
+                    <!-- Riepilogo Budget -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Budget Mensile</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <div class="progress" style="height: 25px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end">
+                                    <h5>€650,00 / €1.000,00</h5>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-4 text-center mb-3">
+                                    <h5>Speso questo mese</h5>
+                                    <h3 class="text-danger">€650,00</h3>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <h5>Budget mensile</h5>
+                                    <h3>€1.000,00</h3>
+                                </div>
+                                <div class="col-md-4 text-center mb-3">
+                                    <h5>Rimanente</h5>
+                                    <h3 class="text-success">€350,00</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grafico spese per categoria -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Spese per Categoria</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <canvas id="expenseCategoryChart" height="300"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Categoria</th>
+                                                    <th>Importo</th>
+                                                    <th>Percentuale</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><span class="badge bg-success">Alimentari</span></td>
+                                                    <td>€250,00</td>
+                                                    <td>38,46%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-danger">Trasporti</span></td>
+                                                    <td>€150,00</td>
+                                                    <td>23,08%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-primary">Casa</span></td>
+                                                    <td>€120,00</td>
+                                                    <td>18,46%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-warning">Svago</span></td>
+                                                    <td>€80,00</td>
+                                                    <td>12,31%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="badge bg-info">Altro</span></td>
+                                                    <td>€50,00</td>
+                                                    <td>7,69%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Elenco spese -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Elenco Spese</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Categoria</th>
+                                            <th>Descrizione</th>
+                                            <th>Importo</th>
+                                            <th>Azioni</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>01/04/2025</td>
+                                            <td><span class="badge bg-success">Alimentari</span></td>
+                                            <td>Spesa settimanale</td>
+                                            <td class="text-danger">€85,30</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary edit-expense" data-expense-id="1">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-expense" data-expense-id="1">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>28/03/2025</td>
+                                            <td><span class="badge bg-danger">Trasporti</span></td>
+                                            <td>Benzina</td>
+                                            <td class="text-danger">€45,00</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary edit-expense" data-expense-id="2">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-expense" data-expense-id="2">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>26/03/2025</td>
+                                            <td><span class="badge bg-warning">Svago</span></td>
+                                            <td>Cinema</td>
+                                            <td class="text-danger">€25,00</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary edit-expense" data-expense-id="3">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-expense" data-expense-id="3">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Proiezioni -->
+                <div class="content-section d-none" id="projections-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Proiezioni Finanziarie</h1>
+                        <button class="btn btn-primary" id="edit-projections-btn">
+                            <i class="bi bi-pencil me-1"></i> Modifica Proiezioni
+                        </button>
+                    </div>
+                    
+                    <!-- Grafico proiezioni -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Proiezione del Patrimonio fino a Dicembre 2025</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="totalProjectionChart" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Dettagli proiezioni -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Dettagli Proiezioni</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Asset</th>
+                                            <th>Valore Attuale</th>
+                                            <th>Valore Proiettato (Dic 2025)</th>
+                                            <th>Crescita Prevista</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Crypto</td>
+                                            <td>€424,00</td>
+                                            <td>€487,60</td>
+                                            <td class="text-success">+15,00%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ETF</td>
+                                            <td>€4.575,00</td>
+                                            <td>€4.977,14</td>
+                                            <td class="text-success">+8,79%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Argento</td>
+                                            <td>€221,00</td>
+                                            <td>€235,37</td>
+                                            <td class="text-success">+6,50%</td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td><strong>Totale</strong></td>
+                                            <td><strong>€5.220,00</strong></td>
+                                            <td><strong>€5.700,11</strong></td>
+                                            <td class="text-success"><strong>+9,20%</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proiezioni mensili -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Proiezioni Mensili</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Mese</th>
+                                            <th>Crypto</th>
+                                            <th>ETF</th>
+                                            <th>Argento</th>
+                                            <th>Totale</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Aprile 2025</td>
+                                            <td>€424,00</td>
+                                            <td>€4.575,00</td>
+                                            <td>€221,00</td>
+                                            <td>€5.220,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maggio 2025</td>
+                                            <td>€429,30</td>
+                                            <td>€4.608,56</td>
+                                            <td>€222,21</td>
+                                            <td>€5.260,07</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giugno 2025</td>
+                                            <td>€434,67</td>
+                                            <td>€4.642,42</td>
+                                            <td>€223,43</td>
+                                            <td>€5.300,52</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Luglio 2025</td>
+                                            <td>€440,10</td>
+                                            <td>€4.676,58</td>
+                                            <td>€224,66</td>
+                                            <td>€5.341,34</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agosto 2025</td>
+                                            <td>€445,60</td>
+                                            <td>€4.711,04</td>
+                                            <td>€225,90</td>
+                                            <td>€5.382,54</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Settembre 2025</td>
+                                            <td>€451,17</td>
+                                            <td>€4.745,80</td>
+                                            <td>€227,15</td>
+                                            <td>€5.424,12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ottobre 2025</td>
+                                            <td>€456,81</td>
+                                            <td>€4.780,87</td>
+                                            <td>€228,40</td>
+                                            <td>€5.466,08</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Novembre 2025</td>
+                                            <td>€462,52</td>
+                                            <td>€4.816,24</td>
+                                            <td>€229,67</td>
+                                            <td>€5.508,43</td>
+                                        </tr>
+                                        <tr class="table-primary">
+                                            <td><strong>Dicembre 2025</strong></td>
+                                            <td><strong>€487,60</strong></td>
+                                            <td><strong>€4.977,14</strong></td>
+                                            <td><strong>€235,37</strong></td>
+                                            <td><strong>€5.700,11</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Alert -->
+                <div class="content-section d-none" id="alerts-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Alert</h1>
+                        <button class="btn btn-primary" id="edit-alerts-btn">
+                            <i class="bi bi-gear me-1"></i> Configura Alert
+                        </button>
+                    </div>
+                    
+                    <!-- Alert attivi -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h4 class="my-0 fw-normal">Alert Attivi</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-danger" role="alert">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        <strong>Performance negativa per Crypto:</strong> -45,78%
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger dismiss-alert" data-alert-id="1">
+                                        <i class="bi bi-x-circle"></i> Ignora
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" role="alert">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        <strong>Performance negativa per ETF:</strong> -9,15%
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger dismiss-alert" data-alert-id="2">
+                                        <i class="bi bi-x-circle"></i> Ignora
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurazione alert -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Configurazione Alert</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="alertPerformanceNegative" checked>
+                                        <label class="form-check-label" for="alertPerformanceNegative">Alert per performance negative</label>
+                                    </div>
+                                    <div class="input-group mt-2">
+                                        <span class="input-group-text">Soglia</span>
+                                        <input type="number" class="form-control" id="thresholdPerformanceNegative" value="-5">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="alertPerformancePositive" checked>
+                                        <label class="form-check-label" for="alertPerformancePositive">Alert per performance positive</label>
+                                    </div>
+                                    <div class="input-group mt-2">
+                                        <span class="input-group-text">Soglia</span>
+                                        <input type="number" class="form-control" id="thresholdPerformancePositive" value="10">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="alertAllocationImbalance" checked>
+                                        <label class="form-check-label" for="alertAllocationImbalance">Alert per allocazione sbilanciata</label>
+                                    </div>
+                                    <div class="input-group mt-2">
+                                        <span class="input-group-text">Soglia</span>
+                                        <input type="number" class="form-control" id="thresholdAllocationImbalance" value="70">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="alertBudgetExceeded" checked>
+                                        <label class="form-check-label" for="alertBudgetExceeded">Alert per budget superato</label>
+                                    </div>
+                                    <div class="input-group mt-2">
+                                        <span class="input-group-text">Soglia</span>
+                                        <input type="number" class="form-control" id="thresholdBudgetExceeded" value="90">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-center mt-3">
+                                    <button class="btn btn-primary" id="save-alerts-config">
+                                        <i class="bi bi-save me-1"></i> Salva Configurazione
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cronologia alert -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h4 class="my-0 fw-normal">Cronologia Alert</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Tipo</th>
+                                            <th>Messaggio</th>
+                                            <th>Stato</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>02/04/2025</td>
+                                            <td><span class="badge bg-danger">Critico</span></td>
+                                            <td>Performance negativa per Crypto: -45,78%</td>
+                                            <td><span class="badge bg-warning">Attivo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>02/04/2025</td>
+                                            <td><span class="badge bg-danger">Critico</span></td>
+                                            <td>Performance negativa per ETF: -9,15%</td>
+                                            <td><span class="badge bg-warning">Attivo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>15/03/2025</td>
+                                            <td><span class="badge bg-warning">Avviso</span></td>
+                                            <td>Budget mensile superato all'80%</td>
+                                            <td><span class="badge bg-success">Risolto</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>01/03/2025</td>
+                                            <td><span class="badge bg-info">Info</span></td>
+                                            <td>Nuovo mese iniziato, budget resettato</td>
+                                            <td><span class="badge bg-secondary">Informativo</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modali -->
+    <!-- Modal per modifica asset -->
+    <div class="modal fade" id="editAssetModal" tabindex="-1" aria-labelledby="editAssetModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAssetModalLabel">Modifica Asset</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAssetForm">
+                        <input type="hidden" id="assetType" value="">
+                        <div class="mb-3">
+                            <label for="currentValue" class="form-label">Valore Attuale</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control" id="currentValue" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contributedValue" class="form-label">Contributi Versati</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control" id="contributedValue" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="growthForecast" class="form-label">Previsione Crescita</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="growthForecast" step="0.01" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveAssetChanges">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per aggiunta spesa -->
+    <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExpenseModalLabel">Aggiungi Spesa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addExpenseForm">
+                        <div class="mb-3">
+                            <label for="expenseDescription" class="form-label">Descrizione</label>
+                            <input type="text" class="form-control" id="expenseDescription" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseAmount" class="form-label">Importo</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control" id="expenseAmount" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseCategory" class="form-label">Categoria</label>
+                            <select class="form-select" id="expenseCategory" required>
+                                <option value="Alimentari">Alimentari</option>
+                                <option value="Trasporti">Trasporti</option>
+                                <option value="Casa">Casa</option>
+                                <option value="Svago">Svago</option>
+                                <option value="Altro">Altro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseDate" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="expenseDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveExpense">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per modifica proiezioni -->
+    <div class="modal fade" id="editProjectionsModal" tabindex="-1" aria-labelledby="editProjectionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProjectionsModalLabel">Modifica Proiezioni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProjectionsForm">
+                        <div class="mb-3">
+                            <label for="cryptoGrowth" class="form-label">Previsione Crescita Crypto</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="cryptoGrowth" step="0.01" value="15.00" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="etfGrowth" class="form-label">Previsione Crescita ETF</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="etfGrowth" step="0.01" value="8.79" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="silverGrowth" class="form-label">Previsione Crescita Argento</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="silverGrowth" step="0.01" value="6.50" required>
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveProjections">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per aggiunta transazione -->
+    <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTransactionModalLabel">Aggiungi Transazione</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action" id="addInvestmentBtn">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Investimento</h5>
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <p class="mb-1">Aggiungi un nuovo investimento a uno dei tuoi asset</p>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" id="addExpenseFromTransactionBtn">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Spesa</h5>
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <p class="mb-1">Registra una nuova spesa</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per aggiunta investimento -->
+    <div class="modal fade" id="addInvestmentModal" tabindex="-1" aria-labelledby="addInvestmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInvestmentModalLabel">Aggiungi Investimento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addInvestmentForm">
+                        <div class="mb-3">
+                            <label for="investmentAsset" class="form-label">Asset</label>
+                            <select class="form-select" id="investmentAsset" required>
+                                <option value="crypto">Crypto</option>
+                                <option value="etf">ETF</option>
+                                <option value="silver">Argento</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentAmount" class="form-label">Importo</label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control" id="investmentAmount" step="0.01" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentDate" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="investmentDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="investmentDescription" class="form-label">Descrizione (opzionale)</label>
+                            <input type="text" class="form-control" id="investmentDescription">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" id="saveInvestment">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

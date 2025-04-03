@@ -1,0 +1,283 @@
+/* Stili generali */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Stili per la sidebar */
+.sidebar {
+    background-color: #212529;
+    min-height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+/* Stili per le card */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    font-weight: 500;
+    padding: 12px 20px;
+}
+
+/* Stili per i grafici */
+canvas {
+    max-width: 100%;
+}
+
+/* Stili per le tabelle */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+/* Stili per i badge */
+.badge {
+    padding: 6px 10px;
+    font-weight: 500;
+}
+
+/* Stili per i bottoni */
+.btn {
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+}
+
+/* Stili per gli alert */
+.alert {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+}
+
+/* Stili per i form */
+.form-control, .form-select {
+    border-radius: 5px;
+    padding: 10px 12px;
+}
+
+.input-group-text {
+    border-radius: 5px;
+}
+
+/* Stili per i modal */
+.modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Ottimizzazione per dispositivi pieghevoli */
+@media (min-width: 992px) {
+    /* Stili per dispositivi in modalità aperta (schermo interno) */
+    main {
+        padding-top: 20px;
+    }
+    
+    .card {
+        margin-bottom: 25px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    /* Stili per dispositivi in modalità chiusa (schermo esterno) */
+    .navbar {
+        margin-bottom: 15px;
+    }
+    
+    .card-header {
+        padding: 10px 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    h1.h2 {
+        font-size: 1.5rem;
+    }
+    
+    .table {
+        font-size: 0.9rem;
+    }
+}
+
+/* Stili per la modalità scura */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    
+    .card {
+        background-color: #1e1e1e;
+        border-color: #333;
+    }
+    
+    .card-header {
+        background-color: #2a2a2a;
+        border-bottom-color: #333;
+    }
+    
+    .table {
+        color: #e0e0e0;
+    }
+    
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .modal-content {
+        background-color: #1e1e1e;
+    }
+    
+    .modal-header, .modal-footer {
+        background-color: #2a2a2a;
+        border-color: #333;
+    }
+    
+    .form-control, .form-select {
+        background-color: #2a2a2a;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+    
+    .input-group-text {
+        background-color: #333;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+}
+
+/* Animazioni */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Stili specifici per Z Fold */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    /* Stili per Z Fold in modalità Flex */
+    .flex-mode .row {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    
+    .flex-mode .col-md-6,
+    .flex-mode .col-md-4 {
+        flex: 0 0 auto;
+        width: 85%;
+        margin-right: 15px;
+    }
+    
+    .flex-mode .card {
+        height: 100%;
+    }
+}
+
+/* Stili per la visualizzazione a doppio pannello su Z Fold aperto */
+@media (min-width: 1200px) {
+    .dual-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .dual-panel-full {
+        grid-column: 1 / span 2;
+    }
+}
+
+/* Stili per i colori degli asset */
+.text-crypto {
+    color: var(--warning-color);
+}
+
+.text-etf {
+    color: var(--info-color);
+}
+
+.text-silver {
+    color: var(--secondary-color);
+}
+
+/* Stili per le performance */
+.performance-positive {
+    color: var(--success-color);
+}
+
+.performance-negative {
+    color: var(--danger-color);
+}
+
+/* Stili per i tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
