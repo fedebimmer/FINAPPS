@@ -397,8 +397,7 @@ function updateUI() {
 }
 
 // == Funzioni di Aggiornamento Specifiche per Sezioni UI ==
-// (Le funzioni da updateAssetCardInInvestments a updateAlertsSection rimangono invariate rispetto alla versione precedente)
-// ... (codice omesso per brevità, è identico a prima) ...
+
 /**
  * Aggiorna la card di un singolo asset nella sezione "Investimenti".
  * @param {string} assetType Chiave dell'asset (es. 'crypto').
@@ -808,8 +807,7 @@ function updateAlertsSection() {
 
 
 // --- CHART FUNCTIONS ---
-// (Le funzioni da initOrUpdateChart a commonChartOptions rimangono invariate)
-// ... (codice omesso per brevità, è identico a prima) ...
+
 /**
  * Inizializza un nuovo grafico Chart.js o aggiorna uno esistente.
  * @param {string} chartId ID dell'elemento <canvas>.
@@ -1030,8 +1028,7 @@ function commonChartOptions(type, title = null, showYAxis = false, tooltipValueP
 
 
 // --- PDF EXPORT ---
-// (Le funzioni generatePdfHtmlReport e generatePdfReport rimangono invariate)
-// ... (codice omesso per brevità, è identico a prima) ...
+
 /**
  * Genera una stringa HTML formattata con stili inline per il report PDF.
  * @returns {string} La stringa HTML del report.
@@ -1221,8 +1218,7 @@ function generatePdfReport() {
 
 
 // --- EVENT LISTENERS & SETUP ---
-// (Le funzioni da setupNavigation a detectFoldableDevice rimangono invariate)
-// ... (codice omesso per brevità, è identico a prima) ...
+
 /**
  * Imposta la logica di navigazione tra le schede (Dashboard, Investimenti, ecc.).
  */
@@ -1393,4 +1389,474 @@ function setupModals() {
             const description = document.getElementById('expenseDescription').value.trim();
             const amount = parseFloat(document.getElementById('expenseAmount').value);
             const category = document.getElementById('expenseCategory').value;
-            const dateValue = document.getElementById('expenseDate').value; // Form
+            const dateValue = document.getElementById('expenseDate').value; // Formato yyyy-mm-dd
+
+            // Validazione input
+            if (!description || isNaN(amount) || amount <= 0 || !category || !dateValue) {
+                showNotification('Errore: Compila tutti i campi correttamente (Importo > 0).', 'danger');
+                return;
+            }
+            // Convalida e formatta la data in dd/mm/yyyy
+            let formattedDate;
+            try {
+                const dateObject = new Date(dateValue + 'T00:00:00'); // Aggiungi ora per evitare problemi fuso orario
+                if (isNaN(dateObject.getTime())) throw new Error('Data non valida');
+                const day = dateObject.getDate().toString().padStart(2, '0');
+                const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Mesi sono 0-based
+                const year = dateObject.getFullYear();
+                formattedDate = `${day}/${month}/${year}`;
+            } catch (e) {
+                showNotification('Errore: Data inserita non valida.', 'danger');
+                return;
+            }
+
+            if (editingExpenseId) {
+                // --- Modifica Spesa Esistente ---
+                const expenseIndex = appData.expenses.transactions.findIndex(tx => tx.id === editingExpenseId);
+                if (expenseIndex > -1) {
+                    // Aggiorna l'oggetto spesa nell'array
+                    appData.expenses.transactions[expenseIndex] = {
+                        ...appData.expenses.transactions[expenseIndex], // Mantieni ID originale
+                        description: description,
+                        amount: amount,
+                        category: category,
+                        date: formattedDate
+                    };
+                    showNotification('Spesa modificata con successo! 👌', 'success');
+                } else {
+                    showNotification('Errore: Impossibile trovare la spesa da modificare.', 'danger');
+                }
+            } else {
+                // --- Aggiungi Nuova Spesa ---
+                const newExpense = {
+                    id: Date.now(), // ID univoco basato sul timestamp
+                    description: description,
+                    amount: amount,
+                    category: category,
+                    date: formattedDate
+                };
+                // Aggiungi la nuova spesa all'inizio dell'array (più recenti prima)
+                appData.expenses.transactions.unshift(newExpense);
+                showNotification('Spesa aggiunta con successo! 💸', 'success');
+            }
+
+            updateUI(); // Aggiorna UI (ricalcola totali, aggiorna tabelle e grafici)
+            addExpenseModal.hide(); // Chiudi il modale
+            editingExpenseId = null; // Resetta ID modifica
+        });
+        // Chiama setup iniziale per i pulsanti modifica/elimina nella tabella spese
+        setupExpenseActionButtons();
+    } // Fine Modale Aggiungi/Modifica Spesa
+
+    // --- Modale Modifica Previsioni Crescita ---
+    const editProjectionsModalElement = document.getElementById('editProjectionsModal');
+    if (editProjectionsModalElement) {
+        const editProjectionsModal = new bootstrap.Modal(editProjectionsModalElement);
+        // Listener per pulsante "Modifica Previsioni"
+        document.getElementById('edit-projections-btn')?.addEventListener('click', () => {
+            // Popola il form con le previsioni attuali
+            for(const key in appData.assets) {
+                const input = document.getElementById(`${key}Growth`);
+                if (input) input.value = appData.assets[key].forecast || 0;
+            }
+            editProjectionsModal.show();
+        });
+        // Listener per pulsante "Salva Previsioni"
+        document.getElementById('saveProjections')?.addEventListener('click', () => {
+            let isValid = true;
+            // Leggi e valida i nuovi valori dal form
+            for(const key in appData.assets){
+                 const input = document.getElementById(`${key}Growth`);
+                 if (input) {
+                     const value = parseFloat(input.value);
+                     if(isNaN(value)) {
+                         isValid = false;
+                         showNotification(`Errore: Valore previsione per ${appData.assets[key].name} non valido.`, 'danger');
+                         break; // Esce al primo errore
+                     } else {
+                         appData.assets[key].forecast = value; // Aggiorna il valore nel data store
+                     }
+                 }
+            }
+            if (isValid) {
+                updateUI(); // Ricalcola proiezioni e aggiorna UI
+                editProjectionsModal.hide();
+                showNotification('Previsioni di crescita aggiornate! 📈', 'success');
+            }
+        });
+    } // Fine Modale Modifica Previsioni
+
+    // --- Modale Configurazione Alert (Opzionale, se presente nell'HTML) ---
+    const alertConfigModalElement = document.getElementById('editAlertsModal'); // Cerca il modal per ID
+    if (alertConfigModalElement) { // Esegui solo se il modal esiste nell'HTML
+        const alertConfigModal = new bootstrap.Modal(alertConfigModalElement);
+        const alertConfigCard = document.getElementById('alerts-config-card'); // Card nella sezione Alert
+
+        // Listener per pulsante "Configura Alert" (se esiste)
+        document.getElementById('edit-alerts-btn')?.addEventListener('click', () => {
+            const config = appData.alerts.config;
+            // Popola il form nel modale con la configurazione corrente
+            // Assicurati che gli ID nel modale corrispondano (es. alertPerformanceNegative, thresholdPerformanceNegative)
+            try {
+                document.getElementById('alertPerformanceNegative').checked = config.performanceNegative.enabled;
+                document.getElementById('thresholdPerformanceNegative').value = config.performanceNegative.threshold;
+                document.getElementById('alertPerformancePositive').checked = config.performancePositive.enabled;
+                document.getElementById('thresholdPerformancePositive').value = config.performancePositive.threshold;
+                document.getElementById('alertAllocationImbalance').checked = config.allocationImbalance.enabled;
+                document.getElementById('thresholdAllocationImbalance').value = config.allocationImbalance.threshold;
+                document.getElementById('alertBudgetExceeded').checked = config.budgetExceeded.enabled;
+                document.getElementById('thresholdBudgetExceeded').value = config.budgetExceeded.threshold;
+                alertConfigModal.show(); // Mostra il modale
+            } catch (e) {
+                console.error("Errore nel popolare il form di configurazione alert:", e);
+                showNotification("Errore: Impossibile caricare la configurazione alert.", "danger");
+            }
+        });
+
+        // Listener per pulsante "Salva Configurazione" nel modale (se esiste)
+        document.getElementById('save-alerts-config')?.addEventListener('click', () => {
+            try {
+                const config = appData.alerts.config;
+                // Leggi i valori dal form e aggiorna la configurazione
+                config.performanceNegative.enabled = document.getElementById('alertPerformanceNegative').checked;
+                config.performanceNegative.threshold = parseFloat(document.getElementById('thresholdPerformanceNegative').value) || 0; // Usa 0 se non valido
+                config.performancePositive.enabled = document.getElementById('alertPerformancePositive').checked;
+                config.performancePositive.threshold = parseFloat(document.getElementById('thresholdPerformancePositive').value) || 0;
+                config.allocationImbalance.enabled = document.getElementById('alertAllocationImbalance').checked;
+                config.allocationImbalance.threshold = parseFloat(document.getElementById('thresholdAllocationImbalance').value) || 100; // Usa 100 se non valido
+                config.budgetExceeded.enabled = document.getElementById('alertBudgetExceeded').checked;
+                config.budgetExceeded.threshold = parseFloat(document.getElementById('thresholdBudgetExceeded').value) || 100;
+
+                updateUI(); // Ricalcola alert e aggiorna UI
+                alertConfigModal.hide();
+                showNotification('Configurazione alert salvata! ⚙️', 'success');
+            } catch (e) {
+                 console.error("Errore nel salvare la configurazione alert:", e);
+                 showNotification("Errore: Impossibile salvare la configurazione.", "danger");
+            }
+        });
+
+        // Mostra la card di configurazione nella sezione Alert solo se il modal esiste
+        if (alertConfigCard) alertConfigCard.style.display = 'block';
+
+    } else {
+        // Se il modal di configurazione non esiste nell'HTML, rimuovi il pulsante "Configura Alert"
+        document.getElementById('edit-alerts-btn')?.remove();
+        // Nascondi la card di configurazione nella sezione Alert
+        const alertConfigCard = document.getElementById('alerts-config-card');
+        if (alertConfigCard) alertConfigCard.style.display = 'none';
+    } // Fine Modale Configurazione Alert
+
+    // --- Modale Aggiungi Transazione (Scelta: Investimento o Spesa) ---
+    const addTransactionModalElement = document.getElementById('addTransactionModal');
+    if (addTransactionModalElement) {
+        const addTransactionModal = new bootstrap.Modal(addTransactionModalElement);
+        // Listener per pulsante "Aggiungi" nel header Dashboard
+        document.getElementById('add-transaction-btn')?.addEventListener('click', () => {
+            addTransactionModal.show();
+        });
+    } // Fine Modale Aggiungi Transazione
+
+    // --- Modale Aggiungi Investimento ---
+    const addInvestmentModalElement = document.getElementById('addInvestmentModal');
+    if (addInvestmentModalElement) {
+        const addInvestmentModal = new bootstrap.Modal(addInvestmentModalElement);
+        const addInvestmentForm = document.getElementById('addInvestmentForm');
+        // Listener per pulsante "Investimento" nel modale Scelta Transazione
+        document.getElementById('addInvestmentBtn')?.addEventListener('click', () => {
+            bootstrap.Modal.getInstance('#addTransactionModal')?.hide(); // Chiudi modale scelta
+            addInvestmentForm.reset(); // Pulisci form
+            document.getElementById('investmentDate').valueAsDate = new Date(); // Imposta data a oggi
+            addInvestmentModal.show(); // Mostra modale investimento
+        });
+        // Listener per pulsante "Salva Investimento"
+        document.getElementById('saveInvestment')?.addEventListener('click', () => {
+            const assetType = document.getElementById('investmentAsset').value; // 'crypto', 'etf', 'silver'
+            const amount = parseFloat(document.getElementById('investmentAmount').value);
+            const dateValue = document.getElementById('investmentDate').value;
+            const description = document.getElementById('investmentDescription').value.trim() || `Investimento in ${appData.assets[assetType]?.name || assetType}`; // Descrizione default
+
+            // Validazione
+            if (!assetType || isNaN(amount) || amount <= 0 || !dateValue) {
+                showNotification('Errore: Compila Asset, Importo (> 0) e Data.', 'danger');
+                return;
+            }
+            if (!appData.assets[assetType]) {
+                 showNotification('Errore: Tipo di asset selezionato non valido.', 'danger');
+                 return;
+            }
+             // Format date (optional, could store as ISO or Date object)
+             let formattedDate; try { const d=new Date(dateValue+'T00:00:00'); formattedDate=`${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`; } catch(e){ formattedDate=new Date().toLocaleDateString('it-IT'); }
+
+
+            // Aggiorna i contributi versati per l'asset selezionato
+            appData.assets[assetType].contributedValue = (appData.assets[assetType].contributedValue || 0) + amount;
+
+            // Opzionale: Aggiungere questa transazione a un log separato di investimenti
+            // appData.investmentTransactions.unshift({ id: Date.now(), type: assetType, amount: amount, date: formattedDate, description: description });
+
+            updateUI(); // Ricalcola totali, performance e aggiorna UI
+            addInvestmentModal.hide();
+            showNotification(`Investimento di ${formatCurrency(amount)} in ${appData.assets[assetType].name} aggiunto! 💰`, 'success');
+        });
+    } // Fine Modale Aggiungi Investimento
+
+    // Setup iniziale per i pulsanti Ignora negli alert (verrà richiamato da updateUI)
+    setupDismissAlertButtons();
+}
+
+/**
+ * Imposta (o reimposta) gli event listener per i pulsanti Modifica/Elimina nella tabella spese.
+ * Utilizza la delegazione degli eventi sul tbody per gestire righe aggiunte dinamicamente.
+ */
+function setupExpenseActionButtons() {
+    const expenseTableBody = document.getElementById('expenses-list-table-body');
+    if (!expenseTableBody) return;
+
+    // Rimuovi listener precedente per evitare duplicati se questa funzione viene chiamata più volte
+    expenseTableBody.removeEventListener('click', handleExpenseActionClick);
+    // Aggiungi un singolo listener al tbody
+    expenseTableBody.addEventListener('click', handleExpenseActionClick);
+}
+
+/**
+ * Gestore eventi delegato per i click sui pulsanti nella tabella spese.
+ * @param {Event} event L'oggetto evento click.
+ */
+function handleExpenseActionClick(event) {
+     // Trova il pulsante effettivo che è stato cliccato (o un suo figlio, come l'icona <i>)
+     const button = event.target.closest('button.edit-expense, button.delete-expense');
+     if (!button) return; // Click non su un pulsante di azione
+
+     const expenseId = parseInt(button.dataset.expenseId);
+     if (isNaN(expenseId)) return; // ID non valido
+
+     if (button.classList.contains('edit-expense')) {
+        // --- Azione Modifica ---
+        console.log(`Richiesta modifica spesa ID: ${expenseId}`);
+        // Apri il modale passando l'ID della spesa da modificare
+        window.openAddExpenseModal(expenseId);
+     } else if (button.classList.contains('delete-expense')) {
+         // --- Azione Elimina ---
+         console.log(`Richiesta eliminazione spesa ID: ${expenseId}`);
+         // Chiedi conferma prima di eliminare
+         if (confirm(`Sei sicuro di voler eliminare questa spesa?\nID: ${expenseId}`)) {
+            // Filtra l'array delle transazioni, rimuovendo quella con l'ID corrispondente
+            const initialLength = appData.expenses.transactions.length;
+            appData.expenses.transactions = appData.expenses.transactions.filter(tx => tx.id !== expenseId);
+            const finalLength = appData.expenses.transactions.length;
+
+            if (initialLength > finalLength) {
+                updateUI(); // Aggiorna UI (ricalcola totali, aggiorna tabella)
+                showNotification('Spesa eliminata con successo.🗑️', 'success');
+            } else {
+                 showNotification('Errore: Spesa non trovata per l\'eliminazione.', 'warning');
+            }
+         }
+     }
+}
+
+/**
+ * Imposta (o reimposta) gli event listener per i pulsanti "Ignora" negli alert attivi.
+ * Utilizza la delegazione degli eventi sul contenitore degli alert.
+ */
+function setupDismissAlertButtons() {
+    // Listener per alert nel Dashboard
+    const dashboardAlertsContainer = document.getElementById('dashboard-active-alerts');
+    if (dashboardAlertsContainer) {
+        dashboardAlertsContainer.removeEventListener('click', handleDismissAlertClick); // Rimuovi vecchio listener
+        dashboardAlertsContainer.addEventListener('click', handleDismissAlertClick); // Aggiungi nuovo
+    }
+    // Listener per alert nella Sezione Alert
+    const alertsListContainer = document.getElementById('alerts-active-list');
+    if (alertsListContainer) {
+        alertsListContainer.removeEventListener('click', handleDismissAlertClick); // Rimuovi vecchio listener
+        alertsListContainer.addEventListener('click', handleDismissAlertClick); // Aggiungi nuovo
+    }
+     // Listener per alert dismissible nel dashboard (se usiamo alert standard)
+    const dashboardAlertsDirect = document.querySelectorAll('#dashboard-active-alerts .alert .dismiss-alert');
+    dashboardAlertsDirect.forEach(button => {
+        // Questo potrebbe essere ridondante se la delegazione funziona, ma è una sicurezza
+        button.removeEventListener('click', handleDismissAlertClick);
+        button.addEventListener('click', handleDismissAlertClick);
+    });
+}
+
+/**
+ * Gestore eventi delegato per i click sui pulsanti "Ignora" (o X) degli alert.
+ * @param {Event} event L'oggetto evento click.
+ */
+function handleDismissAlertClick(event) {
+    // Trova il pulsante dismiss più vicino all'elemento cliccato
+    const dismissButton = event.target.closest('.dismiss-alert, .btn-close'); // Gestisce sia bottoni custom che standard
+    if (!dismissButton) return; // Click non su un pulsante dismiss
+
+    // Ottieni l'ID dell'alert dal data attribute del pulsante o dell'alert stesso
+    const alertElement = dismissButton.closest('.alert[data-alert-internal-id], .alert[data-alert-id]');
+    const alertIdStr = alertElement?.dataset.alertInternalId || alertElement?.dataset.alertId || dismissButton.dataset.alertId;
+
+    if (!alertIdStr) {
+        console.warn("Impossibile trovare l'ID dell'alert da ignorare.");
+        // Se è un alert standard di Bootstrap senza ID nostro, prova a rimuoverlo visivamente
+        dismissButton.closest('.alert')?.remove();
+        return;
+    }
+
+    const alertId = parseInt(alertIdStr);
+    if (isNaN(alertId)) return;
+
+    console.log(`Richiesta ignorare alert ID: ${alertId}`);
+
+    // Trova l'indice dell'alert nell'array degli alert attivi
+    const alertIndex = appData.alerts.active.findIndex(a => a.id === alertId);
+
+    if (alertIndex !== -1) {
+        // Rimuovi l'alert dall'array 'active' e prendi l'oggetto rimosso
+        const dismissedAlert = appData.alerts.active.splice(alertIndex, 1)[0];
+        // Cambia lo stato a 'Risolto' (o 'Ignorato')
+        dismissedAlert.status = 'Risolto';
+        // Aggiungi l'alert all'inizio dell'array 'history'
+        appData.alerts.history.unshift(dismissedAlert);
+
+        // Rimuovi l'elemento alert dal DOM (sia da Dashboard che da Sezione Alert)
+        // Questo evita di dover chiamare updateUI completo solo per rimuovere un alert
+        document.querySelectorAll(`[data-alert-internal-id="${alertId}"], [data-alert-id="${alertId}"]`).forEach(el => el.remove());
+
+        // Aggiorna solo le sezioni UI degli alert (più leggero di updateUI completo)
+        // updateAlertsSection(); // Aggiorna lista attiva e cronologia
+        // updateDashboardAlerts(); // Aggiorna alert nel dashboard
+
+        showNotification('Alert ignorato.', 'info');
+    } else {
+        console.warn(`Alert con ID ${alertId} non trovato tra quelli attivi.`);
+        // Se l'alert non è nell'array ma l'elemento DOM esiste ancora, rimuovilo
+        alertElement?.remove();
+    }
+}
+
+
+/**
+ * Imposta gli event listener per i pulsanti nell'header (Condividi, Esporta, PDF).
+ */
+function setupHeaderButtons() {
+    // Pulsante Condividi
+    document.getElementById('share-btn')?.addEventListener('click', async () => {
+        const shareData = {
+            title: 'Riepilogo Finanziario',
+            text: `Patrimonio Attuale: ${formatCurrency(appData.portfolio.totalValue)}\nPerformance Totale: ${formatPercentage(appData.portfolio.totalPerformance)}\n\nAllocazione:\n${Object.values(appData.assets).map(a=>`- ${a.name}: ${formatCurrency(a.currentValue)}`).join('\n')}`,
+            // url: window.location.href // Opzionale: condividi URL dell'app
+        };
+        // Usa l'API Web Share se disponibile
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+                showNotification('Riepilogo condiviso! 🎉', 'success');
+            } catch (err) {
+                // Ignora errore se l'utente annulla la condivisione
+                if (err.name !== 'AbortError') {
+                    console.error('Errore condivisione:', err);
+                    showNotification('Errore durante la condivisione. 🙁', 'danger');
+                    // Fallback: copia negli appunti se la condivisione fallisce
+                    copySummaryToClipboard();
+                    showNotification('Condivisione fallita, riepilogo copiato negli appunti. 📋', 'warning');
+                }
+            }
+        } else {
+            // Fallback per browser/dispositivi che non supportano Web Share API
+            copySummaryToClipboard();
+            showNotification('Condivisione web non supportata. Riepilogo copiato negli appunti. 📋', 'warning');
+        }
+    });
+
+    // Pulsante Esporta Riepilogo (copia testo)
+    document.getElementById('export-summary-btn')?.addEventListener('click', copySummaryToClipboard);
+
+    // Pulsante Esporta PDF
+    document.getElementById('export-pdf-btn')?.addEventListener('click', generatePdfReport);
+}
+
+/**
+ * Genera un riepilogo testuale e lo copia negli appunti.
+ */
+function copySummaryToClipboard() {
+     const summaryText = `--- Riepilogo Finanziario (${new Date().toLocaleDateString('it-IT')}) ---\n` +
+                       `Patrimonio Totale: ${formatCurrency(appData.portfolio.totalValue)}\n` +
+                       `Contributi Totali: ${formatCurrency(appData.portfolio.totalContributions)}\n` +
+                       `Performance Totale: ${formatPercentage(appData.portfolio.totalPerformance)}\n\n` +
+                       `--- Allocazione Asset ---\n` +
+                       `${Object.values(appData.assets).map(a =>
+                           `- ${a.name}: ${formatCurrency(a.currentValue)} (${formatPercentage(appData.portfolio.totalValue > 0 ? (a.currentValue / appData.portfolio.totalValue) * 100 : 0)})`
+                       ).join('\n')}\n\n` +
+                       `--- Spese Mensili (Budget: ${formatCurrency(appData.expenses.budget)}) ---\n` +
+                       `Speso: ${formatCurrency(appData.expenses.spent)} (${formatPercentage(appData.expenses.budget > 0 ? (appData.expenses.spent / appData.expenses.budget) * 100 : 0)} del budget)\n` +
+                       `Rimanente: ${formatCurrency(appData.expenses.budget - appData.expenses.spent)}`;
+
+    // Usa l'API Clipboard per copiare il testo
+    navigator.clipboard.writeText(summaryText).then(() => {
+        showNotification('Riepilogo copiato negli appunti! 📋', 'success');
+    }, (err) => {
+        console.error('Errore copia negli appunti:', err);
+        showNotification('Errore durante la copia del riepilogo. 🙁', 'danger');
+    });
+}
+
+/**
+ * Mostra una notifica toast di Bootstrap.
+ * @param {string} message Messaggio da visualizzare.
+ * @param {'info' | 'success' | 'warning' | 'danger'} [type='info'] Tipo di notifica (colore).
+ */
+function showNotification(message, type = 'info') {
+    const toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        console.warn("Contenitore toast ('toast-container') non trovato. Impossibile mostrare notifica.");
+        return;
+    }
+    const toastId = `toast-${Date.now()}`; // ID univoco per il toast
+    // HTML del toast (allineato a destra, colore basato sul tipo)
+    const toastHTML = `
+        <div id="${toastId}" class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>`;
+
+    // Aggiungi il toast al contenitore
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+    // Inizializza e mostra il toast usando l'API di Bootstrap
+    const toastElement = document.getElementById(toastId);
+    if (toastElement) {
+        const toastInstance = new bootstrap.Toast(toastElement);
+        // Rimuovi l'elemento toast dal DOM dopo che è stato nascosto
+        toastElement.addEventListener('hidden.bs.toast', () => {
+            toastElement.remove();
+        });
+        toastInstance.show();
+    }
+}
+
+/**
+ * Funzione placeholder per rilevare dispositivi pieghevoli (potrebbe essere usata
+ * per adattare layout in futuro, ma richiede API specifiche o librerie).
+ */
+function detectFoldableDevice() {
+    // Implementazione futura se necessario/possibile
+    // Esempio: navigator.windowSegments
+    // if (navigator.windowSegments) { console.log("Dispositivo pieghevole rilevato?"); }
+}
+
+// --- APP INITIALIZATION ---
+
+// Esegui il codice di setup quando il DOM è completamente caricato e pronto.
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🚀 DOM Caricato. Inizializzazione Applicazione Finanziaria...");
+    detectFoldableDevice(); // Check (opzionale) per dispositivi pieghevoli
+    setupNavigation();      // Imposta navigazione tra schede
+    setupModals();          // Imposta logica finestre modali
+    setupHeaderButtons();   // Imposta pulsanti header (condividi, etc.)
+    updateUI();             // Prima chiamata per popolare tutta l'interfaccia con i dati iniziali e calcolare tutto
+    console.log("✨ Applicazione inizializzata e pronta.");
+});
