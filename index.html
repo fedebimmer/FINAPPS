@@ -1,61 +1,42 @@
+```html
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Finanziaria Avanzata</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Favicon (optional) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3 d-none d-lg-block sidebar">
-                <div class="d-flex flex-column flex-shrink-0 p-3 text-white">
-                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <div class="row flex-nowrap"> <!-- flex-nowrap per evitare wrap su schermi piccoli -->
+            <!-- Sidebar (Visibile solo su LG e superiori) -->
+            <div class="col-lg-3 col-xl-2 d-none d-lg-block sidebar vh-100 overflow-auto p-0"> <!-- Rimosso padding per full width interno -->
+                <div class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top h-100"> <!-- h-100 per altezza completa -->
+                    <a href="#" onclick="window.showSection('dashboard-content'); return false;" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                         <i class="bi bi-piggy-bank-fill me-2 fs-4"></i> <span class="fs-4">Finanza Pro</span>
                     </a>
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link active" id="dashboard-tab">
-                                <i class="bi bi-speedometer2 me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white" id="investments-tab">
-                                <i class="bi bi-graph-up-arrow me-2"></i> Investimenti
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white" id="contributions-tab">
-                                <i class="bi bi-calendar-plus me-2"></i> Contributi PAC
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white" id="expenses-tab">
-                                <i class="bi bi-cart me-2"></i> Spese
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white" id="projections-tab">
-                                <i class="bi bi-calendar-check me-2"></i> Proiezioni CAGR
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white" id="alerts-tab">
-                                <i class="bi bi-bell me-2"></i> Alert
-                            </a>
-                        </li>
-                         <hr class="my-2">
-                         <li>
-                            <a href="#" class="nav-link text-white" id="profile-tab">
-                                <i class="bi bi-person-circle me-2"></i> Profilo
-                            </a>
-                        </li>
-                        </ul>
+                        <li class="nav-item"><a href="#" class="nav-link" id="dashboard-tab"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+                        <li><a href="#" class="nav-link text-white" id="investments-tab"><i class="bi bi-graph-up-arrow me-2"></i> Investimenti</a></li>
+                        <li><a href="#" class="nav-link text-white" id="contributions-tab"><i class="bi bi-calendar-plus me-2"></i> Contributi PAC</a></li>
+                        <li><a href="#" class="nav-link text-white" id="expenses-tab"><i class="bi bi-cart me-2"></i> Spese</a></li>
+                        <li><a href="#" class="nav-link text-white" id="projections-tab"><i class="bi bi-calendar-check me-2"></i> Proiezioni</a></li>
+                        <li><a href="#" class="nav-link text-white" id="alerts-tab"><i class="bi bi-bell me-2"></i> Alert</a></li>
+                        <hr class="my-2">
+                        <li><a href="#" class="nav-link text-white" id="profile-tab"><i class="bi bi-person-circle me-2"></i> Profilo</a></li>
+                    </ul>
                     <hr>
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -72,16 +53,18 @@
                 </div>
             </div>
 
-            <main class="col-12 col-lg-9 ms-sm-auto px-md-4 main-content">
-                <nav class="navbar navbar-expand-lg navbar-dark d-lg-none bg-dark sticky-top">
+            <!-- Main Content Area -->
+            <main class="col-lg-9 col-xl-10 col-12 ms-sm-auto px-md-4 main-content vh-100 overflow-auto">
+                <!-- Navbar Mobile (Visibile solo sotto LG) -->
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-lg-none">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#"><i class="bi bi-piggy-bank-fill me-1"></i> Finanza Pro</a>
+                        <a class="navbar-brand" href="#" onclick="window.showSection('dashboard-content'); return false;"><i class="bi bi-piggy-bank-fill me-1"></i> Finanza Pro</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav">
-                                <li class="nav-item"><a class="nav-link active" href="#" id="mobile-dashboard-tab">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" id="mobile-dashboard-tab">Dashboard</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" id="mobile-investments-tab">Investimenti</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" id="mobile-contributions-tab">Contributi</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" id="mobile-expenses-tab">Spese</a></li>
@@ -93,6 +76,7 @@
                     </div>
                 </nav>
 
+                <!-- ================== DASHBOARD SECTION ================== -->
                 <div class="content-section" id="dashboard-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Dashboard Riepilogativa</h1>
@@ -104,75 +88,82 @@
                                 <button type="button" class="btn btn-sm btn-outline-secondary" id="export-summary-btn" title="Copia Riepilogo Testuale">
                                     <i class="bi bi-clipboard-data-fill me-1"></i>Esporta Riepilogo
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-success" id="export-pdf-btn" title="Genera Report PDF Completo">
+                                <button type="button" class="btn btn-sm btn-success" id="export-pdf-btn" title="Genera Report PDF Completo">
                                     <i class="bi bi-file-earmark-pdf-fill me-1"></i>Esporta PDF
                                 </button>
                             </div>
                          </div>
                     </div>
 
+                    <!-- Riepilogo Patrimonio -->
                     <div class="card mb-4 shadow-sm" id="dashboard-summary-card">
                         <div class="card-header">
-                            <h4 class="my-0 fw-normal">Riepilogo Patrimonio</h4>
+                            <h4 class="my-0 fw-normal fs-5">Riepilogo Patrimonio</h4>
                         </div>
                         <div class="card-body">
                             <div class="row text-center">
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-4 mb-3 mb-md-0">
                                     <h5>Valore Totale</h5>
-                                    <h2 class="text-primary" id="dashboard-total-value">€ --,--</h2>
+                                    <h2 class="text-primary fw-bold" id="dashboard-total-value">€ --,--</h2>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-4 mb-3 mb-md-0 border-start border-end">
                                     <h5>Contributi Totali</h5>
                                     <h2 id="dashboard-total-contributions">€ --,--</h2>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-4">
                                     <h5>Performance Totale</h5>
-                                    <h2 class="text-secondary" id="dashboard-total-performance">--,--%</h2>
+                                    <h2 class="text-secondary fw-bold" id="dashboard-total-performance">--,--%</h2>
                                 </div>
                             </div>
                             <hr>
+                            <!-- Riepilogo Asset Singoli -->
                             <div class="row text-center mt-3" id="dashboard-asset-summary-row">
-                                <div class="col-md-4 mb-3">
-                                    <h5 class="text-warning">Crypto</h5>
-                                    <h3 class="text-warning" id="dashboard-crypto-value">€ --,--</h3>
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <h5 class="text-crypto">Crypto</h5>
+                                    <h3 class="text-crypto" id="dashboard-crypto-value">€ --,--</h3>
                                     <small class="text-secondary" id="dashboard-crypto-performance">--,--%</small>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <h5 class="text-info">ETF</h5>
-                                    <h3 class="text-info" id="dashboard-etf-value">€ --,--</h3>
+                                <div class="col-md-4 mb-3 mb-md-0 border-start border-end">
+                                    <h5 class="text-etf">ETF</h5>
+                                    <h3 class="text-etf" id="dashboard-etf-value">€ --,--</h3>
                                     <small class="text-secondary" id="dashboard-etf-performance">--,--%</small>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <h5 class="text-secondary">Argento</h5>
-                                    <h3 class="text-secondary" id="dashboard-silver-value">€ --,--</h3>
+                                <div class="col-md-4">
+                                    <h5 class="text-silver">Argento</h5>
+                                    <h3 class="text-silver" id="dashboard-silver-value">€ --,--</h3>
                                     <small class="text-secondary" id="dashboard-silver-performance">--,--%</small>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                     <!-- Alert Attivi Dashboard -->
+                     <div id="dashboard-active-alerts">
+                         <!-- Contenuto generato da JS -->
+                     </div>
+
+                    <!-- Grafici Dashboard -->
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-lg-6 mb-4">
                             <div class="card shadow-sm h-100">
-                                <div class="card-header"><h4 class="my-0 fw-normal">Allocazione Asset</h4></div>
+                                <div class="card-header"><h4 class="my-0 fw-normal fs-5">Allocazione Asset</h4></div>
                                 <div class="card-body chart-container"><canvas id="allocationChart"></canvas></div>
                             </div>
                         </div>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-lg-6 mb-4">
                             <div class="card shadow-sm h-100">
-                                <div class="card-header"><h4 class="my-0 fw-normal">Andamento Previsto (CAGR)</h4></div>
+                                <!-- Titolo spostato nelle opzioni del grafico JS -->
+                                <!-- <div class="card-header"><h4 class="my-0 fw-normal fs-5">Andamento Previsto Totale</h4></div> -->
                                 <div class="card-body chart-container"><canvas id="performanceChart"></canvas></div>
                             </div>
                         </div>
                     </div>
 
-                     <div id="dashboard-active-alerts">
-                         </div>
-
+                    <!-- Ultime Transazioni -->
                     <div class="card mb-4 shadow-sm">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="my-0 fw-normal">Ultime Transazioni (Spese/Contributi)</h4>
-                            <button class="btn btn-sm btn-outline-primary" id="add-transaction-btn" title="Aggiungi Spesa o Investimento">
+                            <h4 class="my-0 fw-normal fs-5">Ultime Transazioni</h4>
+                            <button class="btn btn-sm btn-primary" id="add-transaction-btn" title="Aggiungi Spesa o Investimento">
                                 <i class="bi bi-plus-circle me-1"></i> Aggiungi
                             </button>
                         </div>
@@ -189,94 +180,106 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr><td colspan="5" class="text-center text-muted p-3">Nessuna transazione recente.</td></tr>
+                                        <!-- Righe generate da JS -->
+                                        <tr><td colspan="5" class="text-center text-muted p-3">Caricamento transazioni...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Dashboard Section -->
 
+                <!-- ================== INVESTMENTS SECTION ================== -->
                 <div class="content-section d-none" id="investments-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Panoramica Investimenti</h1>
                     </div>
+                     <!-- Riepilogo Investimenti Totali -->
                      <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Riepilogo Investimenti Totali</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Riepilogo Investimenti Totali</h4></div>
                         <div class="card-body">
                             <div class="row text-center">
-                                <div class="col-md-4 mb-3"><h5 >Valore Attuale</h5><h2 class="text-primary" id="investments-total-value">€ --,--</h2></div>
-                                <div class="col-md-4 mb-3"><h5 >Contributi Versati</h5><h2 id="investments-total-contributions">€ --,--</h2></div>
-                                <div class="col-md-4 mb-3"><h5 >Performance Totale</h5><h2 class="text-secondary" id="investments-total-performance">--,--%</h2></div>
+                                <div class="col-md-4 mb-3 mb-md-0"><h5 >Valore Attuale</h5><h2 class="text-primary fw-bold" id="investments-total-value">€ --,--</h2></div>
+                                <div class="col-md-4 mb-3 mb-md-0 border-start border-end"><h5 >Contributi Versati</h5><h2 id="investments-total-contributions">€ --,--</h2></div>
+                                <div class="col-md-4"><h5 >Performance Totale</h5><h2 class="text-secondary fw-bold" id="investments-total-performance">--,--%</h2></div>
                             </div>
                         </div>
                     </div>
+                    <!-- Card Asset Singoli -->
                     <div class="row">
-                        <div class="col-md-4 mb-4">
+                        <!-- Card Crypto -->
+                        <div class="col-lg-4 mb-4">
                             <div class="card shadow-sm h-100">
-                                <div class="card-header bg-warning text-dark"><h4 class="my-0 fw-normal">Crypto</h4></div>
+                                <div class="card-header bg-warning text-dark"><h4 class="my-0 fw-normal fs-5">Crypto</h4></div>
                                 <div class="card-body d-flex flex-column">
-                                    <h2 class="card-title pricing-card-title mb-3" id="investments-crypto-value">€ --,--</h2>
-                                    <ul class="list-unstyled mt-auto mb-4">
+                                    <h2 class="card-title pricing-card-title mb-3 fw-bold" id="investments-crypto-value">€ --,--</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
                                         <li id="investments-crypto-contributions">Contributi: € --,--</li>
                                         <li id="investments-crypto-performance">Performance: --,--%</li>
                                         <li id="investments-crypto-forecast">Prev. CAGR: --,--%</li>
                                     </ul>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-warning edit-asset mt-auto" data-asset-type="crypto" title="Modifica Valore, Contributi e Previsione CAGR">Modifica</button>
+                                    <button type="button" class="btn btn-outline-warning edit-asset mt-auto" data-asset-type="crypto" title="Modifica Valore, Contributi e Previsione CAGR">Modifica Dati</button>
                                     </div>
                             </div>
                         </div>
-                         <div class="col-md-4 mb-4">
+                         <!-- Card ETF -->
+                         <div class="col-lg-4 mb-4">
                              <div class="card shadow-sm h-100">
-                                <div class="card-header bg-info text-white"><h4 class="my-0 fw-normal">ETF</h4></div>
+                                <div class="card-header bg-info text-dark"><h4 class="my-0 fw-normal fs-5">ETF</h4></div>
                                 <div class="card-body d-flex flex-column">
-                                    <h2 class="card-title pricing-card-title mb-3" id="investments-etf-value">€ --,--</h2>
-                                    <ul class="list-unstyled mt-auto mb-4">
+                                    <h2 class="card-title pricing-card-title mb-3 fw-bold" id="investments-etf-value">€ --,--</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
                                         <li id="investments-etf-contributions">Contributi: € --,--</li>
                                         <li id="investments-etf-performance">Performance: --,--%</li>
                                         <li id="investments-etf-forecast">Prev. CAGR: --,--%</li>
                                     </ul>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-info edit-asset mt-auto" data-asset-type="etf" title="Modifica Valore, Contributi e Previsione CAGR">Modifica</button>
+                                    <button type="button" class="btn btn-outline-info edit-asset mt-auto" data-asset-type="etf" title="Modifica Valore, Contributi e Previsione CAGR">Modifica Dati</button>
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-4 mb-4">
+                         <!-- Card Argento -->
+                         <div class="col-lg-4 mb-4">
                              <div class="card shadow-sm h-100">
-                                <div class="card-header bg-secondary text-white"><h4 class="my-0 fw-normal">Argento</h4></div>
+                                <div class="card-header bg-secondary text-white"><h4 class="my-0 fw-normal fs-5">Argento</h4></div>
                                 <div class="card-body d-flex flex-column">
-                                    <h2 class="card-title pricing-card-title mb-3" id="investments-silver-value">€ --,--</h2>
-                                    <ul class="list-unstyled mt-auto mb-4">
+                                    <h2 class="card-title pricing-card-title mb-3 fw-bold" id="investments-silver-value">€ --,--</h2>
+                                    <ul class="list-unstyled mt-3 mb-4">
                                         <li id="investments-silver-contributions">Contributi: € --,--</li>
                                         <li id="investments-silver-performance">Performance: --,--%</li>
                                         <li id="investments-silver-forecast">Prev. CAGR: --,--%</li>
                                     </ul>
-                                    <button type="button" class="btn btn-lg btn-block btn-outline-secondary edit-asset mt-auto" data-asset-type="silver" title="Modifica Valore, Contributi e Previsione CAGR">Modifica</button>
+                                    <button type="button" class="btn btn-outline-secondary edit-asset mt-auto" data-asset-type="silver" title="Modifica Valore, Contributi e Previsione CAGR">Modifica Dati</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                     <!-- Allocazione Patrimonio (Grafico + Tabella) -->
                      <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Allocazione del Patrimonio</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Allocazione del Patrimonio</h4></div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 chart-container"><canvas id="investmentsAllocationChart"></canvas></div>
-                                <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 mb-3 mb-lg-0 chart-container" style="min-height: 300px;"><canvas id="investmentsAllocationChart"></canvas></div>
+                                <div class="col-lg-6">
                                     <div class="table-responsive">
                                         <table class="table table-sm align-middle">
                                             <thead><tr><th>Asset</th><th>Valore</th><th class="text-end">Percentuale</th></tr></thead>
                                             <tbody id="investments-allocation-table-body">
-                                                </tbody>
+                                                <!-- Righe generate da JS -->
+                                                <tr><td colspan="3" class="text-center text-muted p-3">Caricamento allocazione...</td></tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="content-section d-none" id="crypto-content"></div>
-                    <div class="content-section d-none" id="etf-content"></div>
-                    <div class="content-section d-none" id="silver-content"></div>
-                </div>
+                     <!-- Spazio per eventuali dettagli asset futuri -->
+                    <!-- <div class="content-section d-none" id="crypto-content">Dettaglio Crypto Qui</div> -->
+                    <!-- <div class="content-section d-none" id="etf-content">Dettaglio ETF Qui</div> -->
+                    <!-- <div class="content-section d-none" id="silver-content">Dettaglio Argento Qui</div> -->
+                </div> <!-- Fine Investments Section -->
 
+                <!-- ================== CONTRIBUTIONS (PAC) SECTION ================== -->
                 <div class="content-section d-none" id="contributions-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Gestione Contributi PAC</h1>
@@ -284,30 +287,35 @@
                              <i class="bi bi-plus-circle me-1"></i> Aggiungi Contributo
                          </button>
                     </div>
+                    <!-- Impostazioni PAC -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Impostazioni Piano di Accumulo (PAC)</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Impostazioni Piano di Accumulo (PAC)</h4></div>
                         <div class="card-body">
                             <form id="pacSettingsForm" onsubmit="return false;">
-                                <div class="row">
+                                <div class="row align-items-end">
                                     <div class="col-md-6 mb-3">
                                         <label for="monthlyContribution" class="form-label">Contributo Mensile Totale PAC</label>
                                         <div class="input-group">
                                             <span class="input-group-text">€</span>
-                                            <input type="number" class="form-control" id="monthlyContribution" step="1" min="0" required>
+                                            <input type="number" class="form-control" id="monthlyContribution" step="1" min="0" required value="0">
                                         </div>
-                                        <div class="form-text">Importo totale che versi ogni mese nel tuo PAC.</div>
+                                        <div class="form-text">Importo totale che intendi versare ogni mese nel tuo PAC. Usato per le proiezioni.</div>
                                     </div>
-                                    <div class="col-md-6 mb-3 align-self-end">
+                                    <div class="col-md-6 mb-3">
                                          <button type="button" class="btn btn-success w-100" id="savePacSettings">
-                                             <i class="bi bi-save me-1"></i> Salva Impostazioni PAC
+                                             <i class="bi bi-save me-1"></i> Salva Contributo Mensile
                                          </button>
                                     </div>
                                 </div>
-                                </form>
+                                <!-- Aggiungere qui input per allocazione % PAC se si vuole renderla modificabile -->
+                                <!-- <div class="row mt-3"> ... Allocazione PAC ... </div> -->
+                                <p class="small text-muted mt-3">Nota: L'allocazione del contributo PAC tra gli asset è attualmente impostata nel codice (<span id="pac-allocation-display" class="fw-medium"></span>). Per modificarla, è necessario intervenire sul file `script.js`.</p>
+                            </form>
                         </div>
                     </div>
+                    <!-- Cronologia Contributi -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Cronologia Contributi / Investimenti</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Cronologia Contributi / Investimenti</h4></div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-sm mb-0">
@@ -322,73 +330,83 @@
                                         </tr>
                                     </thead>
                                     <tbody id="contributions-log-table-body">
-                                        <tr><td colspan="6" class="text-center text-muted p-3">Nessun contributo registrato.</td></tr>
+                                        <!-- Righe generate da JS -->
+                                        <tr><td colspan="6" class="text-center text-muted p-3">Nessun contributo/investimento registrato.</td></tr>
                                     </tbody>
                                 </table>
                             </div>
+                             <div class="card-footer text-muted small">
+                                 Questo log mostra tutte le transazioni di tipo "Investimento" aggiunte. L'eliminazione rimuove solo la voce dal log, non modifica i totali versati.
+                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Contributions Section -->
 
+                <!-- ================== EXPENSES SECTION ================== -->
                 <div class="content-section d-none" id="expenses-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Gestione Spese Mensili</h1>
                         <div class="btn-group">
-                            <button class="btn btn-warning" id="add-category-btn" title="Aggiungi una nuova categoria di spesa">
-                                <i class="bi bi-tags-fill me-1"></i> Aggiungi Categoria
+                            <button class="btn btn-outline-secondary btn-sm" id="add-category-btn" title="Aggiungi una nuova categoria di spesa">
+                                <i class="bi bi-tags-fill me-1"></i> Gestisci Categorie
                             </button>
                             <button class="btn btn-primary" id="add-expense-btn" title="Aggiungi una nuova spesa">
                                 <i class="bi bi-plus-circle me-1"></i> Aggiungi Spesa
                             </button>
                         </div>
                     </div>
+                    <!-- Controllo Budget -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Controllo Budget Mensile</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Controllo Budget Mensile</h4></div>
                         <div class="card-body">
-                             <div class="row mb-3">
-                                <div class="col-md-6">
+                             <div class="row mb-3 align-items-center">
+                                <div class="col-md-6 mb-3 mb-md-0">
                                     <label for="monthlyBudgetInput" class="form-label">Imposta Budget Mensile</label>
                                     <div class="input-group">
                                         <span class="input-group-text">€</span>
-                                        <input type="number" class="form-control" id="monthlyBudgetInput" step="10" min="0">
-                                        <button class="btn btn-outline-success" type="button" id="saveMonthlyBudgetBtn">Salva Budget</button>
+                                        <input type="number" class="form-control" id="monthlyBudgetInput" step="10" min="0" placeholder="Es: 1000">
+                                        <button class="btn btn-outline-success" type="button" id="saveMonthlyBudgetBtn">Salva</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Avanzamento Budget</label>
-                                    <div class="progress" style="height: 38px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="expenses-budget-progress">0%</div>
+                                    <label class="form-label d-block">Avanzamento Budget (<span id="expenses-budget-summary" class="fw-medium">€ --,-- / € --,--</span>)</label>
+                                    <div class="progress" style="height: 30px;" title="Percentuale Budget Utilizzato">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated fs-6" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="expenses-budget-progress">0%</div>
                                     </div>
-                                     <div class="text-center small mt-1" id="expenses-budget-summary">€ --,-- / € --,--</div>
                                 </div>
                             </div>
                             <hr>
+                            <!-- Riepilogo Spese -->
                             <div class="row mt-3 text-center">
-                                <div class="col-md-4 mb-3"><h5>Speso questo mese</h5><h3 class="text-danger" id="expenses-spent-value">€ --,--</h3></div>
-                                <div class="col-md-4 mb-3"><h5>Budget mensile</h5><h3 id="expenses-budget-value">€ --,--</h3></div>
-                                <div class="col-md-4 mb-3"><h5>Rimanente</h5><h3 class="text-success" id="expenses-remaining-value">€ --,--</h3></div>
+                                <div class="col-md-4 mb-3 mb-md-0"><h5>Speso questo mese</h5><h3 class="text-danger fw-bold" id="expenses-spent-value">€ --,--</h3></div>
+                                <div class="col-md-4 mb-3 mb-md-0 border-start border-end"><h5>Budget mensile</h5><h3 id="expenses-budget-value">€ --,--</h3></div>
+                                <div class="col-md-4"><h5>Rimanente</h5><h3 class="text-success fw-bold" id="expenses-remaining-value">€ --,--</h3></div>
                             </div>
                         </div>
                     </div>
+                    <!-- Spese per Categoria (Grafico + Tabella) -->
                     <div class="card mb-4 shadow-sm">
-                         <div class="card-header"><h4 class="my-0 fw-normal">Spese per Categoria</h4></div>
+                         <div class="card-header"><h4 class="my-0 fw-normal fs-5">Spese per Categoria</h4></div>
                          <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6 chart-container"><canvas id="expenseCategoryChart"></canvas></div>
-                                <div class="col-md-6">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 mb-3 mb-lg-0 chart-container" style="min-height: 300px;"><canvas id="expenseCategoryChart"></canvas></div>
+                                <div class="col-lg-6">
                                     <div class="table-responsive">
                                         <table class="table table-sm align-middle">
                                             <thead><tr><th>Categoria</th><th>Importo</th><th class="text-end">Percentuale</th></tr></thead>
                                             <tbody id="expenses-category-table-body">
-                                                </tbody>
+                                                <!-- Righe generate da JS -->
+                                                 <tr><td colspan="3" class="text-center text-muted p-3">Caricamento categorie...</td></tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Elenco Dettagliato Spese -->
                     <div class="card mb-4 shadow-sm">
-                         <div class="card-header"><h4 class="my-0 fw-normal">Elenco Dettagliato Spese</h4></div>
+                         <div class="card-header"><h4 class="my-0 fw-normal fs-5">Elenco Dettagliato Spese</h4></div>
                          <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-sm mb-0">
@@ -398,101 +416,134 @@
                                         </tr>
                                     </thead>
                                     <tbody id="expenses-list-table-body">
-                                        </tbody>
+                                        <!-- Righe generate da JS -->
+                                        <tr><td colspan="5" class="text-center text-muted p-3">Caricamento spese...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Expenses Section -->
 
+                <!-- ================== PROJECTIONS SECTION ================== -->
                 <div class="content-section d-none" id="projections-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Proiezioni Finanziarie (CAGR + PAC)</h1>
-                        <button class="btn btn-primary" id="edit-projections-btn" title="Modifica i tassi di crescita annua (CAGR) previsti per ogni asset">
+                        <h1 class="h2">Proiezioni Finanziarie</h1>
+                        <button class="btn btn-outline-primary btn-sm" id="edit-projections-btn" title="Modifica i tassi di crescita annua (CAGR) previsti per ogni asset">
                             <i class="bi bi-pencil me-1"></i> Modifica Previsioni CAGR
                         </button>
                     </div>
+                    <!-- Grafico Proiezione Totale -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Proiezione del Patrimonio (fino a Dicembre <span class="current-year"></span>)</h4></div>
-                         <div class="card-body chart-container"><canvas id="totalProjectionChart"></canvas></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Proiezione del Patrimonio (fino a Dicembre <span class="current-year"></span>)</h4></div>
+                         <div class="card-body chart-container" style="min-height: 350px;"><canvas id="totalProjectionChart"></canvas></div>
                          <div class="card-footer text-muted small">
-                             Proiezione basata su CAGR previsto per ogni asset e contributo mensile PAC di <strong id="projection-pac-value">€ --,--</strong>.
+                             Proiezione basata su CAGR previsto per ogni asset e contributo mensile PAC simulato di <strong id="projection-pac-value" class="text-success">€ --,--</strong>.
                          </div>
                     </div>
+                    <!-- Dettagli Proiezioni (Tabella) -->
                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Dettagli Proiezioni (Stima a Dicembre <span class="current-year"></span>)</h4></div>
-                         <div class="card-body">
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Dettagli Proiezioni (Stima a Dicembre <span class="current-year"></span>)</h4></div>
+                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-striped table-sm">
+                                <table class="table table-striped table-sm mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Asset / Totale</th>
-                                            <th>Valore Attuale</th>
-                                            <th>Valore Previsto</th>
-                                            <th>Crescita Prevista (Valore)</th>
-                                            <th>CAGR Annuo Usato</th>
+                                            <th class="ps-3">Asset / Totale</th>
+                                            <th class="text-end">Valore Attuale</th>
+                                            <th class="text-end">Valore Previsto</th>
+                                            <th class="text-end">Crescita Prevista (€)</th>
+                                            <th class="text-end pe-3">CAGR Annuo Usato (%)</th>
                                          </tr>
                                     </thead>
                                     <tbody id="projections-details-table-body">
-                                        </tbody>
+                                        <!-- Righe generate da JS -->
+                                         <tr><td colspan="5" class="text-center text-muted p-3">Caricamento dettagli proiezioni...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    <!-- Proiezioni Mensili Dettagliate (Tabella) -->
                     <div class="card mb-4 shadow-sm">
-                         <div class="card-header"><h4 class="my-0 fw-normal">Proiezioni Mensili Dettagliate</h4></div>
-                         <div class="card-body">
+                         <div class="card-header"><h4 class="my-0 fw-normal fs-5">Proiezioni Mensili Dettagliate</h4></div>
+                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-sm table-hover">
-                                    <thead><tr><th>Mese</th><th>Crypto</th><th>ETF</th><th>Argento</th><th>Totale</th></tr></thead>
+                                <table class="table table-sm table-hover mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="ps-3">Mese</th>
+                                            <th class="text-end">Crypto</th>
+                                            <th class="text-end">ETF</th>
+                                            <th class="text-end">Argento</th>
+                                            <th class="text-end pe-3">Totale</th>
+                                        </tr>
+                                    </thead>
                                     <tbody id="projections-monthly-table-body">
-                                        </tbody>
+                                        <!-- Righe generate da JS -->
+                                         <tr><td colspan="5" class="text-center text-muted p-3">Caricamento proiezioni mensili...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Projections Section -->
 
+                <!-- ================== ALERTS SECTION ================== -->
                 <div class="content-section d-none" id="alerts-content">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Gestione Alert Finanziari</h1>
-                        <button class="btn btn-primary" id="edit-alerts-btn" title="Configura le soglie per l'attivazione degli alert">
+                        <button class="btn btn-outline-primary btn-sm" id="edit-alerts-btn" title="Configura le soglie per l'attivazione degli alert">
                             <i class="bi bi-gear me-1"></i> Configura Soglie Alert
                         </button>
                     </div>
-                     <div class="card mb-4 shadow-sm">
-                        <div class="card-header bg-danger text-white"><h4 class="my-0 fw-normal">Alert Attivi</h4></div>
+                     <!-- Alert Attivi -->
+                     <div class="card mb-4 shadow-sm border-danger">
+                        <div class="card-header bg-danger text-white"><h4 class="my-0 fw-normal fs-5"><i class="bi bi-exclamation-triangle-fill me-2"></i>Alert Attivi</h4></div>
                         <div class="card-body" id="alerts-active-list">
-                            <p class="text-center text-muted">Nessun alert attivo.</p>
+                            <!-- Contenuto generato da JS -->
+                            <p class="text-center text-muted p-3">Nessun alert attivo.</p>
                         </div>
                     </div>
+                    <!-- Card Configurazione (mostrata/nascosta da JS) -->
                     <div class="card mb-4 shadow-sm" id="alerts-config-card" style="display: none;">
-                        <div class="card-header"><h4 class="my-0 fw-normal">Configurazione Alert</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">Configurazione Soglie</h4></div>
                         <div class="card-body">
-                             <p>Le soglie per gli alert (performance, budget, allocazione) possono essere modificate tramite il pulsante <button class="btn btn-sm btn-outline-primary disabled"><i class="bi bi-gear me-1"></i> Configura Soglie Alert</button> in alto a destra.</p>
-                             <p class="mt-3"><strong>Invio Email (Simulazione):</strong> Se viene configurato un indirizzo email nel Profilo, gli alert critici verranno preparati per l'invio (attualmente simulato nella console del browser).</p>
+                             <p>Le soglie per gli alert (performance, budget, allocazione) possono essere modificate tramite il pulsante <button class="btn btn-sm btn-outline-primary disabled py-0 px-1"><i class="bi bi-gear"></i></button> in alto a destra.</p>
+                             <p class="mt-3 small text-muted"><strong>Invio Email (Simulazione):</strong> Se viene configurato un indirizzo email nel Profilo, gli alert critici verranno preparati per l'invio (attualmente simulato nella console del browser).</p>
                         </div>
                     </div>
+                    <!-- Cronologia Alert -->
                     <div class="card mb-4 shadow-sm">
-                         <div class="card-header"><h4 class="my-0 fw-normal">Cronologia Alert (Attivi e Risolti)</h4></div>
+                         <div class="card-header"><h4 class="my-0 fw-normal fs-5">Cronologia Alert (Attivi e Ignorati)</h4></div>
                          <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-sm mb-0">
-                                    <thead><tr><th class="ps-3">Data</th><th>Tipo</th><th>Messaggio</th><th>Stato</th></tr></thead>
+                                    <thead>
+                                        <tr>
+                                            <th class="ps-3">Data</th>
+                                            <th>Tipo</th>
+                                            <th>Messaggio</th>
+                                            <th class="pe-3">Stato</th>
+                                        </tr>
+                                    </thead>
                                     <tbody id="alerts-history-table-body">
-                                        </tbody>
+                                        <!-- Righe generate da JS -->
+                                         <tr><td colspan="4" class="text-center text-muted p-3">Caricamento cronologia alert...</td></tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Alerts Section -->
 
+                <!-- ================== PROFILE SECTION ================== -->
                 <div class="content-section d-none" id="profile-content">
                      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Profilo Utente e Impostazioni</h1>
                     </div>
                     <div class="card shadow-sm">
-                        <div class="card-header"><h4 class="my-0 fw-normal">I Tuoi Dati</h4></div>
+                        <div class="card-header"><h4 class="my-0 fw-normal fs-5">I Tuoi Dati</h4></div>
                         <div class="card-body">
                             <form id="profileForm" onsubmit="return false;">
                                 <div class="row">
@@ -503,7 +554,7 @@
                                     <div class="col-md-6 mb-3">
                                         <label for="profileEmail" class="form-label">Indirizzo Email (per Alert)</label>
                                         <input type="email" class="form-control" id="profileEmail" placeholder="tuamail@example.com">
-                                        <div class="form-text">Inserisci un'email valida per ricevere notifiche (funzionalità futura).</div>
+                                        <div class="form-text">Inserisci un'email valida per ricevere notifiche (funzionalità non attiva).</div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -532,13 +583,19 @@
                                 </div>
                             </form>
                         </div>
+                         <div class="card-footer text-muted small">
+                            Le modifiche al profilo sono salvate solo per la sessione corrente del browser.
+                         </div>
                     </div>
-                </div>
+                </div> <!-- Fine Profile Section -->
 
             </main>
-        </div>
-    </div>
+        </div> <!-- Fine Row Principale -->
+    </div> <!-- Fine Container Fluid -->
 
+    <!-- ================== MODALS ================== -->
+
+    <!-- Modale Modifica Dati Asset -->
     <div class="modal fade" id="editAssetModal" tabindex="-1" aria-labelledby="editAssetModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -551,28 +608,29 @@
                         <input type="hidden" id="assetType" value="">
                         <div class="mb-3">
                             <label for="currentValue" class="form-label">Valore Attuale</label>
-                            <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="currentValue" step="0.01" required></div>
+                            <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="currentValue" step="0.01" required min="0"></div>
                         </div>
                         <div class="mb-3">
                             <label for="contributedValue" class="form-label">Contributi Versati Totali</label>
-                            <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="contributedValue" step="0.01" required></div>
-                            <div class="form-text">Questo è il totale versato storicamente. I nuovi contributi vanno aggiunti dalla sezione PAC.</div>
+                            <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="contributedValue" step="0.01" required min="0"></div>
+                            <div class="form-text small text-muted">Totale storico versato. I nuovi contributi vanno aggiunti dalla sezione PAC o dal pulsante "+" nel Dashboard.</div>
                         </div>
                         <div class="mb-3">
                             <label for="growthForecast" class="form-label">Previsione Crescita Annua (CAGR)</label>
                             <div class="input-group"><input type="number" class="form-control" id="growthForecast" step="0.01" required><span class="input-group-text">%</span></div>
-                            <div class="form-text">Tasso annuo composto usato per le proiezioni.</div>
+                            <div class="form-text small text-muted">Tasso annuo composto usato per le proiezioni future.</div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" id="saveAssetChanges">Salva Modifiche Asset</button>
+                    <button type="button" class="btn btn-primary" id="saveAssetChanges">Salva Modifiche</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modale Aggiungi/Modifica Spesa -->
     <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -586,18 +644,21 @@
                             <label for="expenseDescription" class="form-label">Descrizione</label>
                             <input type="text" class="form-control" id="expenseDescription" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="expenseAmount" class="form-label">Importo</label>
-                            <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="expenseAmount" step="0.01" required min="0.01"></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseAmount" class="form-label">Importo</label>
+                                <div class="input-group"><span class="input-group-text">€</span><input type="number" class="form-control" id="expenseAmount" step="0.01" required min="0.01"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expenseDate" class="form-label">Data</label>
+                                <input type="date" class="form-control" id="expenseDate" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="expenseCategory" class="form-label">Categoria</label>
                             <select class="form-select" id="expenseCategory" required>
-                                </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="expenseDate" class="form-label">Data</label>
-                            <input type="date" class="form-control" id="expenseDate" required>
+                                <!-- Opzioni generate da JS -->
+                            </select>
                         </div>
                     </form>
                 </div>
@@ -609,6 +670,7 @@
         </div>
     </div>
 
+    <!-- Modale Aggiungi Categoria Spesa -->
      <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -624,18 +686,19 @@
                         </div>
                          <div class="mb-3">
                             <label for="newCategoryColor" class="form-label">Colore Etichetta</label>
-                            <input type="color" class="form-control form-control-color" id="newCategoryColor" value="#adb5bd" title="Scegli un colore">
+                            <input type="color" class="form-control form-control-color w-100" id="newCategoryColor" value="#adb5bd" title="Scegli un colore">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" id="saveNewCategory">Aggiungi Categoria</button>
+                    <button type="button" class="btn btn-primary" id="saveNewCategory">Aggiungi</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modale Modifica Previsioni CAGR -->
     <div class="modal fade" id="editProjectionsModal" tabindex="-1" aria-labelledby="editProjectionsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -653,12 +716,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                    <button type="button" class="btn btn-primary" id="saveProjections">Salva Previsioni CAGR</button>
+                    <button type="button" class="btn btn-primary" id="saveProjections">Salva Previsioni</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modale Scelta Aggiungi Transazione -->
     <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-labelledby="addTransactionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -670,18 +734,18 @@
                     <p class="text-center">Che tipo di transazione vuoi aggiungere?</p>
                     <div class="list-group">
                         <a href="#" class="list-group-item list-group-item-action" id="addInvestmentBtn">
-                            <div class="d-flex w-100 justify-content-between">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h5 class="mb-1">💰 Investimento / Contributo PAC</h5>
-                                <i class="bi bi-graph-up-arrow fs-4"></i>
+                                <i class="bi bi-graph-up-arrow fs-4 text-success"></i>
                             </div>
-                            <p class="mb-1 small">Registra un nuovo versamento in Crypto, ETF o Argento.</p>
+                            <p class="mb-1 small text-muted">Registra un nuovo versamento in Crypto, ETF o Argento.</p>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action" id="addExpenseFromTransactionBtn">
-                            <div class="d-flex w-100 justify-content-between">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h5 class="mb-1">💸 Spesa</h5>
-                                <i class="bi bi-cart fs-4"></i>
+                                <i class="bi bi-cart fs-4 text-danger"></i>
                             </div>
-                            <p class="mb-1 small">Registra una nuova spesa e assegnala a una categoria.</p>
+                            <p class="mb-1 small text-muted">Registra una nuova spesa e assegnala a una categoria.</p>
                         </a>
                     </div>
                 </div>
@@ -689,6 +753,7 @@
         </div>
     </div>
 
+    <!-- Modale Aggiungi Investimento / Contributo -->
     <div class="modal fade" id="addInvestmentModal" tabindex="-1" aria-labelledby="addInvestmentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -701,27 +766,28 @@
                         <div class="mb-3">
                             <label for="investmentAsset" class="form-label">Asset di Destinazione</label>
                             <select class="form-select" id="investmentAsset" required>
+                                <!-- Opzioni generate da JS -->
                                 <option value="" disabled selected>-- Seleziona Asset --</option>
-                                <option value="crypto">Crypto</option>
-                                <option value="etf">ETF</option>
-                                <option value="silver">Argento</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="investmentAmount" class="form-label">Importo Contributo</label>
-                            <div class="input-group">
-                                <span class="input-group-text">€</span>
-                                <input type="number" class="form-control" id="investmentAmount" step="0.01" required min="0.01">
+                         <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="investmentAmount" class="form-label">Importo Contributo</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">€</span>
+                                    <input type="number" class="form-control" id="investmentAmount" step="0.01" required min="0.01">
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="investmentDate" class="form-label">Data Contributo</label>
-                            <input type="date" class="form-control" id="investmentDate" required>
+                            <div class="col-md-6 mb-3">
+                                <label for="investmentDate" class="form-label">Data Contributo</label>
+                                <input type="date" class="form-control" id="investmentDate" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="investmentDescription" class="form-label">Descrizione (opzionale)</label>
                             <input type="text" class="form-control" id="investmentDescription" placeholder="Es: Contributo PAC Aprile">
                         </div>
+                        <div class="form-text small text-muted">Questa operazione aggiornerà i "Contributi Versati" totali per l'asset selezionato e aggiungerà una voce al log nella sezione Contributi PAC.</div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -732,8 +798,9 @@
         </div>
     </div>
 
+    <!-- Modale Configurazione Alert -->
     <div class="modal fade" id="editAlertsModal" tabindex="-1" aria-labelledby="editAlertsModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg"> <!-- Modal più largo per leggibilità -->
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editAlertsModalLabel">Configura Soglie Alert</h5>
@@ -741,62 +808,448 @@
           </div>
           <div class="modal-body">
             <form id="editAlertsForm" onsubmit="return false;">
-              <div class="form-check form-switch mb-2">
-                <input class="form-check-input" type="checkbox" role="switch" id="alertPerformanceNegative">
-                <label class="form-check-label" for="alertPerformanceNegative">Alert Performance Negativa Asset</label>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Soglia Inferiore</span>
-                <input type="number" class="form-control" id="thresholdPerformanceNegative" step="0.1">
-                <span class="input-group-text">%</span>
-              </div>
-
-              <div class="form-check form-switch mb-2">
-                <input class="form-check-input" type="checkbox" role="switch" id="alertPerformancePositive">
-                <label class="form-check-label" for="alertPerformancePositive">Alert Performance Positiva Asset (Info)</label>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Soglia Superiore</span>
-                <input type="number" class="form-control" id="thresholdPerformancePositive" step="0.1">
-                <span class="input-group-text">%</span>
-              </div>
-
-              <div class="form-check form-switch mb-2">
-                <input class="form-check-input" type="checkbox" role="switch" id="alertAllocationImbalance">
-                <label class="form-check-label" for="alertAllocationImbalance">Alert Squilibrio Allocazione Asset</label>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Soglia Max Allocazione</span>
-                <input type="number" class="form-control" id="thresholdAllocationImbalance" step="1">
-                <span class="input-group-text">% del Totale</span>
+              <div class="row mb-3 border-bottom pb-3">
+                <div class="col-md-6">
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="alertPerformanceNegative">
+                        <label class="form-check-label" for="alertPerformanceNegative">Alert Performance Negativa Asset (Critico)</label>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">Attiva se Performance &lt;</span>
+                        <input type="number" class="form-control" id="thresholdPerformanceNegative" step="0.1" placeholder="-5">
+                        <span class="input-group-text">%</span>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="alertPerformancePositive">
+                        <label class="form-check-label" for="alertPerformancePositive">Alert Performance Positiva Asset (Info)</label>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">Attiva se Performance &gt;</span>
+                        <input type="number" class="form-control" id="thresholdPerformancePositive" step="0.1" placeholder="10">
+                        <span class="input-group-text">%</span>
+                    </div>
+                 </div>
               </div>
 
-              <div class="form-check form-switch mb-2">
-                <input class="form-check-input" type="checkbox" role="switch" id="alertBudgetExceeded">
-                <label class="form-check-label" for="alertBudgetExceeded">Alert Superamento Budget Spese</label>
-              </div>
-              <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">Soglia Utilizzo Budget</span>
-                <input type="number" class="form-control" id="thresholdBudgetExceeded" step="1">
-                <span class="input-group-text">% del Budget</span>
+              <div class="row mb-3">
+                 <div class="col-md-6">
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="alertAllocationImbalance">
+                        <label class="form-check-label" for="alertAllocationImbalance">Alert Squilibrio Allocazione (Avviso)</label>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">Attiva se Asset &gt;</span>
+                        <input type="number" class="form-control" id="thresholdAllocationImbalance" step="1" placeholder="70">
+                        <span class="input-group-text">% del Totale</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="alertBudgetExceeded">
+                        <label class="form-check-label" for="alertBudgetExceeded">Alert Superamento Budget Spese (Avviso)</label>
+                    </div>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">Attiva se Speso &gt;</span>
+                        <input type="number" class="form-control" id="thresholdBudgetExceeded" step="1" placeholder="90">
+                        <span class="input-group-text">% del Budget</span>
+                    </div>
+                   </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-primary" id="save-alerts-config">Salva Configurazione Alert</button>
+            <button type="button" class="btn btn-primary" id="save-alerts-config">Salva Configurazione</button>
           </div>
         </div>
       </div>
     </div>
 
-
+    <!-- Contenitore per le notifiche Toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index: 1090">
-         </div>
+         <!-- Toasts verranno aggiunti qui da JS -->
+    </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap JS Bundle (include Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" integrity="sha256-LFOeOYMlaUTPhY18NvG4xA/7z/NxbNCOg+NlvuWvPAc=" crossorigin="anonymous"></script>
+    <!-- Custom Script -->
     <script src="script.js"></script>
 </body>
 </html>
+```
+
+---
+
+**FILE 3: `styles.css`**
+
+```css
+/* Stili generali */
+:root {
+    --bs-primary-rgb: 13, 110, 253; /* Bootstrap Blu */
+    --bs-secondary-rgb: 108, 117, 125; /* Bootstrap Grigio */
+    --bs-success-rgb: 25, 135, 84; /* Bootstrap Verde */
+    --bs-danger-rgb: 220, 53, 69; /* Bootstrap Rosso */
+    --bs-warning-rgb: 255, 193, 7; /* Bootstrap Giallo */
+    --bs-info-rgb: 13, 202, 240; /* Bootstrap Ciano */
+    --bs-light-rgb: 248, 249, 250;
+    --bs-dark-rgb: 33, 37, 41;
+    --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-body-bg: #f8f9fa; /* Sfondo leggermente grigio chiaro */
+    --bs-body-color: #212529;
+}
+
+html, body {
+    height: 100%; /* Altezza completa per layout sticky/vh-100 */
+    overflow: hidden; /* Evita scroll doppio body/main */
+}
+
+body {
+    font-family: var(--bs-body-font-family);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-size: 0.95rem; /* Leggermente più piccolo per compattezza */
+    line-height: 1.5;
+}
+
+/* Stili per la sidebar */
+.sidebar {
+    background-color: #212529; /* Dark fisso per contrasto */
+    position: sticky;
+    top: 0;
+    z-index: 1020; /* Sopra contenuto ma sotto modal */
+    height: 100vh; /* Altezza viewport */
+    overflow-y: auto; /* Scroll solo se necessario */
+}
+.sidebar .nav-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    border-radius: 0.25rem; /* Leggero arrotondamento link */
+    margin-bottom: 2px; /* Spazio tra link */
+}
+.sidebar .nav-link.active {
+    background-color: rgba(var(--bs-primary-rgb), 0.9);
+    color: white !important; /* Forza colore bianco su attivo */
+}
+.sidebar .nav-link:not(.active) {
+     color: rgba(255, 255, 255, 0.75); /* Grigio chiaro per non attivi */
+}
+.sidebar .nav-link:not(.active):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+     color: white; /* Bianco su hover */
+}
+.sidebar .nav-link .bi {
+    font-size: 1.1rem; /* Icone leggermente più grandi */
+    vertical-align: text-bottom; /* Allinea meglio icone */
+    margin-right: 0.5rem !important; /* Spazio forzato dopo icona */
+    width: 1.25em; /* Spazio fisso per icona per allineamento testo */
+    text-align: center; /* Centra icona nello spazio */
+    display: inline-block;
+}
+.sidebar hr {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Navbar mobile */
+.navbar-dark { /* Applica a navbar mobile */
+    background-color: #212529 !important; /* Sfondo scuro consistente */
+}
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.navbar-toggler-icon {
+     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-collapse {
+    background-color: #212529; /* Sfondo scuro anche per collapse */
+}
+
+/* Main content area */
+.main-content {
+    padding-top: 1rem; /* Spazio sopra contenuto */
+    height: 100vh; /* Altezza viewport per contenuto principale */
+    overflow-y: auto; /* Scroll solo per main content */
+}
+
+/* Stili per le card */
+.card {
+    border-radius: 0.375rem; /* Arrotondamento standard BS */
+    border: 1px solid rgba(var(--bs-secondary-rgb), 0.175); /* Bordo leggero */
+    margin-bottom: 1.5rem; /* Più spazio tra card */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Ombra leggera standard */
+    transition: box-shadow 0.3s ease;
+}
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Ombra più pronunciata su hover */
+}
+.card-header {
+    font-weight: 500;
+    background-color: rgba(var(--bs-secondary-rgb), 0.03); /* Sfondo header molto leggero */
+    border-bottom: 1px solid rgba(var(--bs-secondary-rgb), 0.175);
+    padding: 0.75rem 1.25rem;
+}
+.card-header .fs-5 { font-size: 1.1rem !important; } /* Dimensione titolo header */
+
+.card-title {
+    margin-bottom: 0.5rem;
+}
+.card-body {
+     padding: 1.25rem;
+}
+.card-body.p-0 { padding: 0 !important; } /* Per tabelle senza padding */
+.card-footer {
+     background-color: rgba(var(--bs-secondary-rgb), 0.03);
+     border-top: 1px solid rgba(var(--bs-secondary-rgb), 0.175);
+     padding: 0.75rem 1.25rem;
+}
+
+/* Stili per i grafici */
+.chart-container {
+    position: relative;
+    min-height: 280px; /* Altezza minima per evitare collasso */
+    width: 100%;
+}
+canvas {
+    max-width: 100%;
+    height: auto; /* Permette al canvas di scalare */
+    display: block; /* Rimuovi spazio extra sotto canvas */
+}
+
+/* Stili per le tabelle */
+.table {
+    margin-bottom: 0; /* Rimuovi margine default dentro card */
+}
+.table th {
+    font-weight: 500;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    color: #495057; /* Colore header tabella */
+    background-color: rgba(var(--bs-secondary-rgb), 0.03); /* Leggero sfondo header */
+    vertical-align: middle;
+}
+.table td {
+    vertical-align: middle;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    font-size: 0.9rem;
+}
+.table-sm th, .table-sm td {
+    padding: 0.4rem 0.5rem; /* Padding ridotto per table-sm */
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.04); /* Hover leggero */
+}
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: rgba(var(--bs-secondary-rgb), 0.03); /* Colore stripe leggermente più visibile */
+    background-color: var(--bs-table-accent-bg); /* Applica colore stripe */
+}
+
+/* Stili per i badge */
+.badge {
+    padding: 0.4em 0.65em; /* Padding leggermente aggiustato */
+    font-weight: 500;
+    font-size: 0.8rem;
+    line-height: 1; /* Assicura altezza consistente */
+}
+
+/* Stili per i bottoni */
+.btn {
+    border-radius: 0.375rem; /* Arrotondamento standard BS */
+    padding: 0.375rem 0.75rem; /* Padding standard BS */
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease-in-out;
+}
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+.btn-lg {
+     padding: 0.5rem 1rem;
+     font-size: 1.1rem;
+}
+/* Stile per bottoni modifica/elimina nelle tabelle */
+.table .btn-sm {
+    padding: 0.1rem 0.4rem; /* Padding molto piccolo per bottoni in tabella */
+    font-size: 0.75rem;
+}
+.table .btn-sm .bi {
+    font-size: 0.9em; /* Icone piccole nei bottoni tabella */
+    vertical-align: middle;
+}
+
+/* Stili per gli alert */
+.alert {
+    border-radius: 0.375rem;
+    padding: 0.8rem 1rem; /* Padding standard */
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+.alert .btn-close { /* Adatta bottone chiusura */
+    padding: 0.6rem;
+}
+/* Alert specifici nel dashboard */
+#dashboard-active-alerts .alert {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem; /* Più compatto nel dashboard */
+    margin-bottom: 0.5rem;
+}
+#dashboard-active-alerts .alert .btn-close {
+    padding: 0.5rem;
+    font-size: 0.8em;
+}
+
+/* Stili per i form */
+.form-control, .form-select {
+    border-radius: 0.375rem;
+    padding: 0.45rem 0.75rem; /* Padding leggermente ridotto */
+    font-size: 0.9rem;
+    border-color: #ced4da; /* Colore bordo standard */
+}
+.form-control:focus, .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.input-group-text {
+    border-radius: 0.375rem;
+    font-size: 0.9rem;
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+.form-label {
+     margin-bottom: 0.4rem; /* Meno spazio sotto label */
+     font-size: 0.85rem;
+     font-weight: 500;
+     color: #495057;
+}
+.form-check-label { font-size: 0.9rem; }
+.form-text { font-size: 0.8rem; } /* Testo di aiuto più piccolo */
+
+/* Stili per i modal */
+.modal-content {
+    border-radius: 0.3rem;
+}
+.modal-header {
+    background-color: #f8f9fa; /* Sfondo chiaro header modal */
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1rem;
+}
+.modal-title { font-size: 1.2rem; font-weight: 500; }
+.modal-body { padding: 1.5rem; }
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+}
+
+/* Colori testo specifici */
+.text-crypto { color: var(--bs-warning) !important; }
+.text-etf { color: var(--bs-info) !important; }
+.text-silver { color: var(--bs-secondary) !important; }
+
+/* Classi performance (già definite da Bootstrap, ma le rafforziamo) */
+.text-success { color: var(--bs-success) !important; }
+.text-danger { color: var(--bs-danger) !important; }
+.text-secondary { color: var(--bs-secondary) !important; }
+
+/* Barra di progresso */
+.progress {
+    height: 20px; /* Altezza standard barra */
+    font-size: 0.8rem;
+}
+.progress[style*="height: 30px;"] { /* Altezza custom per budget */
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Stili per dispositivi piccoli */
+@media (max-width: 991.98px) {
+    .main-content {
+         padding-left: 1rem;
+         padding-right: 1rem;
+         padding-top: 70px; /* Spazio per navbar fissa mobile (altezza navbar + margine) */
+         height: calc(100vh - 56px); /* Altezza meno navbar mobile */
+    }
+    h1.h2 { font-size: 1.5rem; } /* Titoli sezione più piccoli */
+    .card-header .fs-5 { font-size: 1rem !important; } /* Titoli card */
+    .btn-toolbar .btn-sm { margin-bottom: 0.5rem;}
+    .row > [class*="col-"] { /* Rimuove padding laterale colonne su mobile per più spazio */
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .px-md-4 { /* Riduci padding laterale main content su mobile */
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+}
+
+/* Stili opzionali per modalità scura (se supportata dal browser e sistema) */
+/* Questa è una base, potrebbe richiedere aggiustamenti specifici */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bs-body-bg: #1a1a1a; /* Sfondo più scuro */
+        --bs-body-color: #e0e0e0;
+        --bs-secondary-rgb: 138, 143, 148; /* Grigio più chiaro per dark mode */
+        --bs-tertiary-bg: #2a2a2a; /* Colore per card/elementi */
+        --bs-border-color: #444; /* Colore bordi */
+        --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
+    }
+    body { background-color: var(--bs-body-bg); color: var(--bs-body-color); }
+    .sidebar { background-color: #111; } /* Sidebar ancora più scura */
+    .sidebar .nav-link:not(.active) { color: rgba(255, 255, 255, 0.65); }
+    .sidebar .nav-link:not(.active):hover { background-color: rgba(255, 255, 255, 0.08); color: white; }
+    .sidebar hr { border-top-color: rgba(255, 255, 255, 0.15); }
+
+    .card { background-color: var(--bs-tertiary-bg); border-color: var(--bs-border-color); }
+    .card-header { background-color: #303030; border-bottom-color: var(--bs-border-color); color: #e0e0e0; }
+    .card-footer { background-color: #303030; border-top-color: var(--bs-border-color); color: #adb5bd; }
+
+    .table { color: #e0e0e0; --bs-table-border-color: var(--bs-border-color); --bs-table-striped-bg: rgba(255, 255, 255, 0.03);}
+    .table th { color: #e0e0e0; background-color: #303030;}
+    .table-hover tbody tr:hover { background-color: rgba(255, 255, 255, 0.06); }
+
+    .modal-content { background-color: var(--bs-tertiary-bg); border-color: var(--bs-border-color); color: #e0e0e0;}
+    .modal-header, .modal-footer { background-color: #303030; border-color: var(--bs-border-color); }
+    .modal-header .btn-close { filter: invert(1) grayscale(100%) brightness(200%); } /* Bottone chiusura bianco */
+
+    .form-control, .form-select { background-color: #303030; border-color: #555; color: #e0e0e0; }
+    .form-control::placeholder { color: #6c757d; }
+    .form-control:focus, .form-select:focus { background-color: #444; border-color: var(--bs-primary); color: #fff; }
+    .input-group-text { background-color: #444; border-color: #555; color: #ccc; }
+    .progress { background-color: #444; }
+    .list-group-item { background-color: var(--bs-tertiary-bg); border-color: var(--bs-border-color); color: #e0e0e0; }
+    .list-group-item-action:hover { background-color: #303030; }
+    hr { border-top-color: var(--bs-border-color); }
+
+    .text-muted { color: #888 !important; } /* Muted più chiaro */
+    .text-secondary { color: #aaa !important; } /* Secondary più chiaro */
+
+    /* Colori testo/badge specifici per dark mode se necessario */
+    .badge.text-dark { background-color: var(--bs-warning); color: #212529 !important; } /* Assicura contrasto su sfondi chiari (es. Giallo) */
+    .text-etf { color: #67d5f0 !important; } /* Ciano leggermente più chiaro */
+    /* ... altri aggiustamenti specifici per dark mode ... */
+
+    /* Colore bordi più chiaro */
+    .border, .border-top, .border-bottom, .border-start, .border-end {
+        border-color: var(--bs-border-color-translucent) !important;
+    }
+    .table-primary {
+        --bs-table-bg: rgba(var(--bs-primary-rgb), 0.2);
+         --bs-table-border-color: rgba(var(--bs-primary-rgb), 0.3);
+         color: #fff;
+    }
+     .table-light {
+         --bs-table-bg: #303030;
+         --bs-table-border-color: #444;
+         color: #e0e0e0;
+     }
+}
+```
